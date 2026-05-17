@@ -1,0 +1,20 @@
+{
+  "workbench.colorCustomizations": {
+    "editor.background": "#191919",
+    "statusBarItem.remoteBackground": "#292929",
+    "activityBar.background": "#421832",
+    "titleBar.activeBackground": "#5C2246",
+    "titleBar.activeForeground": "#FDFAFC",
+    "titleBar.inactiveBackground": "#421832",
+    "titleBar.inactiveForeground": "#FDFAFC",
+    "statusBar.background": "#421832",
+    "statusBar.foreground": "#FDFAFC",
+    "statusBar.debuggingBackground": "#421832",
+    "statusBar.debuggingForeground": "#FDFAFC",
+    "statusBar.noFolderBackground": "#421832",
+    "statusBar.noFolderForeground": "#FDFAFC"
+  },
+  "editor.formatOnSave": true,
+  "js/ts.tsdk.path": "node_modules\\typescript\\lib",
+  "folder-color.pathColors": []
+}
