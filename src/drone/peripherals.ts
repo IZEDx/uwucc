@@ -1,4 +1,4 @@
-import { anyKey } from "../lib/chalk";
+import { anyKey, showHeader } from "../lib/chalk";
 import { Config } from "../lib/config";
 import { clamp, round, Thrusts } from "../lib/util";
 
@@ -15,7 +15,7 @@ export interface SensorState {
 
 export namespace Peripherals {
 	export type Sensors = {
-		altitude: any;
+		//altitude: any;
 		gimbal: any;
 		vel_fwd: any;
 		vel_sides: any;
@@ -40,10 +40,10 @@ export namespace Peripherals {
 
 export const cfg = new Config("connectors", {
 	sensors: {
-		altitude: "altitude_sensor_0",
-		gimbal: "gimbal_sensor_0",
-		vel_fwd: "velocity_sensor_0",
-		vel_right: "velocity_sensor_1",
+		//altitude: "altitude_sensor_0",
+		//gimbal: "gimbal_sensor_0",
+		//vel_fwd: "velocity_sensor_0",
+		//vel_right: "velocity_sensor_1",
 	},
 	rotors: {
 		fl: "electric_motor_0",
@@ -73,10 +73,10 @@ type Peripherals = {
 
 export const peripherals = {
 	sensors: {
-		altitude: peripheral.wrap(cfg.data.sensors.altitude) as AltitudeSensorPeripheral,
-		gimbal: peripheral.wrap(cfg.data.sensors.gimbal) as GimbalSensorPeripheral,
-		vel_fwd: peripheral.wrap(cfg.data.sensors.vel_fwd) as VelocitySensorPeripheral,
-		vel_right: peripheral.wrap(cfg.data.sensors.vel_right) as VelocitySensorPeripheral,
+		//altitude: peripheral.wrap(cfg.data.sensors.altitude) as AltitudeSensorPeripheral,
+		//gimbal: peripheral.wrap(cfg.data.sensors.gimbal) as GimbalSensorPeripheral,
+		//vel_fwd: peripheral.wrap(cfg.data.sensors.vel_fwd) as VelocitySensorPeripheral,
+		//vel_right: peripheral.wrap(cfg.data.sensors.vel_right) as VelocitySensorPeripheral,
 	},
 	rotors: {
 		fl: peripheral.wrap(cfg.data.rotors.fl) as ElectricMotorPeripheral,
@@ -112,15 +112,19 @@ const speeds: Record<string, number> = {};
 
 export function pullState() {
 	const p = peripherals;
-	state.alt = p.sensors.altitude.getHeight();
-	state.airP = p.sensors.altitude.getAirPressure();
+	const pose = sublevel.getLogicalPose();
+	state.alt = pose.position.y;
+	state.airP = aero.getAirPressure(new Vector(0, state.alt, 0)); // p.sensors.altitude.getAirPressure();
 
-	state.velF = p.sensors.vel_fwd.getVelocity();
-	state.velR = p.sensors.vel_right.getVelocity();
+	const vel = sublevel.getLinearVelocity();
+	state.velF = vel.x;
+	state.velR = vel.z;
 
-	const angles = p.sensors.gimbal.getAngles();
-	state.pitch = -angles[1];
-	state.roll = angles[0];
+	const [pitch, yaw, roll] = pose.orientation.toEuler();
+	//const angles = p.sensors.gimbal.getAngles();
+	const r = 180 / Math.PI;
+	state.pitch = roll * r; // -angles[1];
+	state.roll = pitch * r; // angles[0];
 
 	const leftInput = p.inputs.xyz.getAnalogInput("left");
 	const rightInput = p.inputs.xyz.getAnalogInput("right");
@@ -139,14 +143,28 @@ export function pullState() {
 }
 
 export function peripheralsSetup() {
+	showHeader("Peripheral Setup");
 	for (const [_s, _p] of Object.entries(cfg.data)) {
 		const section = _s as SectionNames;
 		for (let [_k, side] of Object.entries(_p)) {
 			const key = _k as PeripheralNames<SectionNames>;
 			let p = peripherals[section][key] as IPeripheral;
 			while (!p) {
-				print(`Peripheral ${section}.${key} not found on side ${side}`);
-				side = read();
+				print("");
+				print(`${section}.${key} (${side}):`);
+				term.write("> ");
+				side = read(
+					undefined,
+					[side],
+					(p) => {
+						return peripheral
+							.getNames()
+							.filter((pp) => pp.startsWith(p))
+							.map((pp) => pp.slice(p.length));
+					},
+					"",
+				);
+				print("");
 				p = peripheral.wrap(side) as IPeripheral;
 			}
 			cfg.set(section, key, side as never);
@@ -159,6 +177,7 @@ export function peripheralsSetup() {
 try {
 	pullState();
 } catch (e) {
+	printError(e);
 	peripheralsSetup();
 	pullState();
 	anyKey();

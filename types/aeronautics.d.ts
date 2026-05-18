@@ -1,8 +1,3 @@
-declare namespace sublevel {
-	export function getName(): string;
-	export function getLogicalPose(): unknown;
-}
-
 /** @noSelf */
 declare class AltitudeSensorPeripheral implements IPeripheral {
 	getHeight(): number;

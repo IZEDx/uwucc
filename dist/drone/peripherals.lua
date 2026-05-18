@@ -4,30 +4,29 @@ _G.__tracetrace["drone/peripherals.ts"] = _G.__tracetrace["drone/peripherals.ts"
 package.path = package.path .. ";../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__New = ____lualib.__TS__New
+local __TS__StringSlice = ____lualib.__TS__StringSlice
+local __TS__StringStartsWith = ____lualib.__TS__StringStartsWith
+local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
+local __TS__ArrayMap = ____lualib.__TS__ArrayMap
 local __TS__ObjectEntries = ____lualib.__TS__ObjectEntries
 local __TS__ObjectValues = ____lualib.__TS__ObjectValues
 local __TS__Number = ____lualib.__TS__Number
 local __TS__NumberIsNaN = ____lualib.__TS__NumberIsNaN
-local __TS__ArrayMap = ____lualib.__TS__ArrayMap
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["11"] = 1,["12"] = 1,["13"] = 2,["14"] = 2,["15"] = 3,["16"] = 3,["17"] = 3,["19"] = 41,["20"] = 74,["21"] = 75,["22"] = 75,["23"] = 75,["24"] = 75,["25"] = 75,["26"] = 74,["27"] = 81,["28"] = 81,["29"] = 81,["30"] = 81,["31"] = 81,["32"] = 74,["33"] = 74,["34"] = 92,["35"] = 92,["36"] = 92,["37"] = 74,["38"] = 74,["39"] = 100,["40"] = 100,["41"] = 100,["42"] = 100,["43"] = 100,["44"] = 100,["45"] = 100,["46"] = 100,["47"] = 100,["48"] = 100,["49"] = 111,["50"] = 113,["51"] = 114,["52"] = 115,["53"] = 116,["54"] = 118,["55"] = 119,["56"] = 121,["57"] = 122,["58"] = 123,["59"] = 125,["60"] = 126,["61"] = 127,["62"] = 128,["63"] = 129,["64"] = 130,["65"] = 132,["66"] = 137,["67"] = 138,["68"] = 113,["69"] = 141,["70"] = 142,["71"] = 142,["72"] = 142,["73"] = 143,["74"] = 144,["75"] = 144,["76"] = 144,["77"] = 145,["78"] = 146,["79"] = 147,["80"] = 148,["81"] = 149,["82"] = 150,["84"] = 152,["85"] = 153,["86"] = 154,["89"] = 141,["92"] = 162,["93"] = 163,["94"] = 164,["97"] = 160,["103"] = 167,["104"] = 168,["105"] = 169,["106"] = 169,["107"] = 169,["108"] = 169,["110"] = 167,["111"] = 173,["112"] = 174,["113"] = 175,["115"] = 173,["116"] = 179,["117"] = 181,["118"] = 182,["119"] = 182,["120"] = 182,["121"] = 182,["122"] = 182,["123"] = 182,["124"] = 182,["125"] = 183,["126"] = 184,["127"] = 185,["128"] = 186,["129"] = 187,["130"] = 187,["131"] = 187,["132"] = 187,["133"] = 187,["134"] = 188,["135"] = 189,["136"] = 190,["137"] = 191,["138"] = 192,["140"] = 194,["141"] = 195,["145"] = 182,["146"] = 182,["147"] = 181,["148"] = 179});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["14"] = 1,["15"] = 1,["16"] = 1,["17"] = 2,["18"] = 2,["19"] = 3,["20"] = 3,["21"] = 3,["23"] = 41,["24"] = 74,["25"] = 74,["26"] = 81,["27"] = 81,["28"] = 81,["29"] = 81,["30"] = 81,["31"] = 74,["32"] = 74,["33"] = 92,["34"] = 92,["35"] = 92,["36"] = 74,["37"] = 74,["38"] = 100,["39"] = 100,["40"] = 100,["41"] = 100,["42"] = 100,["43"] = 100,["44"] = 100,["45"] = 100,["46"] = 100,["47"] = 100,["48"] = 111,["49"] = 113,["50"] = 114,["51"] = 115,["52"] = 116,["53"] = 117,["54"] = 119,["55"] = 120,["56"] = 121,["57"] = 123,["58"] = 125,["59"] = 126,["60"] = 127,["61"] = 129,["62"] = 130,["63"] = 131,["64"] = 132,["65"] = 133,["66"] = 134,["67"] = 136,["68"] = 141,["69"] = 142,["70"] = 113,["71"] = 145,["72"] = 146,["73"] = 147,["74"] = 147,["75"] = 147,["76"] = 148,["77"] = 149,["78"] = 149,["79"] = 149,["80"] = 150,["81"] = 151,["82"] = 152,["83"] = 153,["84"] = 154,["85"] = 155,["86"] = 156,["87"] = 156,["88"] = 156,["89"] = 159,["90"] = 160,["91"] = 160,["92"] = 160,["93"] = 160,["94"] = 160,["95"] = 160,["96"] = 160,["97"] = 156,["98"] = 156,["99"] = 156,["100"] = 167,["101"] = 168,["103"] = 170,["104"] = 171,["105"] = 172,["108"] = 145,["111"] = 180,["112"] = 181,["113"] = 182,["114"] = 183,["117"] = 178,["123"] = 186,["124"] = 187,["125"] = 188,["126"] = 188,["127"] = 188,["128"] = 188,["130"] = 186,["131"] = 192,["132"] = 193,["133"] = 194,["135"] = 192,["136"] = 198,["137"] = 200,["138"] = 201,["139"] = 201,["140"] = 201,["141"] = 201,["142"] = 201,["143"] = 201,["144"] = 201,["145"] = 202,["146"] = 203,["147"] = 204,["148"] = 205,["149"] = 206,["150"] = 206,["151"] = 206,["152"] = 206,["153"] = 206,["154"] = 207,["155"] = 208,["156"] = 209,["157"] = 210,["158"] = 211,["160"] = 213,["161"] = 214,["165"] = 201,["166"] = 201,["167"] = 200,["168"] = 198});
 local ____exports = {}
 local ____chalk = require("lib.chalk")
 local anyKey = ____chalk.anyKey
+local showHeader = ____chalk.showHeader
 local ____config = require("lib.config")
 local Config = ____config.Config
 local ____util = require("lib.util")
 local clamp = ____util.clamp
 local round = ____util.round
 ____exports.Peripherals = {}
-____exports.cfg = __TS__New(Config, "connectors", {sensors = {altitude = "altitude_sensor_0", gimbal = "gimbal_sensor_0", vel_fwd = "velocity_sensor_0", vel_right = "velocity_sensor_1"}, rotors = {fl = "electric_motor_0", fr = "electric_motor_1", bl = "electric_motor_2", br = "electric_motor_3"}, monitors = {status = "monitor_0"}, inputs = {xyz = "redstone_relay_0", cruise = "left"}})
+____exports.cfg = __TS__New(Config, "connectors", {sensors = {}, rotors = {fl = "electric_motor_0", fr = "electric_motor_1", bl = "electric_motor_2", br = "electric_motor_3"}, monitors = {status = "monitor_0"}, inputs = {xyz = "redstone_relay_0", cruise = "left"}})
 ____exports.peripherals = {
-    sensors = {
-        altitude = peripheral.wrap(____exports.cfg.data.sensors.altitude),
-        gimbal = peripheral.wrap(____exports.cfg.data.sensors.gimbal),
-        vel_fwd = peripheral.wrap(____exports.cfg.data.sensors.vel_fwd),
-        vel_right = peripheral.wrap(____exports.cfg.data.sensors.vel_right)
-    },
+    sensors = {},
     rotors = {
         fl = peripheral.wrap(____exports.cfg.data.rotors.fl),
         fr = peripheral.wrap(____exports.cfg.data.rotors.fr),
@@ -53,13 +52,16 @@ ____exports.state = {
 local speeds = {}
 function ____exports.pullState()
     local p = ____exports.peripherals
-    ____exports.state.alt = p.sensors.altitude.getHeight()
-    ____exports.state.airP = p.sensors.altitude.getAirPressure()
-    ____exports.state.velF = p.sensors.vel_fwd.getVelocity()
-    ____exports.state.velR = p.sensors.vel_right.getVelocity()
-    local angles = p.sensors.gimbal.getAngles()
-    ____exports.state.pitch = -angles[2]
-    ____exports.state.roll = angles[1]
+    local pose = sublevel.getLogicalPose()
+    ____exports.state.alt = pose.position.y
+    ____exports.state.airP = aero.getAirPressure(vector.new(0, ____exports.state.alt, 0))
+    local vel = sublevel.getLinearVelocity()
+    ____exports.state.velF = vel.x
+    ____exports.state.velR = vel.z
+    local pitch, yaw, roll = pose.orientation:toEuler()
+    local r = 180 / math.pi
+    ____exports.state.pitch = roll * r
+    ____exports.state.roll = pitch * r
     local leftInput = p.inputs.xyz.getAnalogInput("left")
     local rightInput = p.inputs.xyz.getAnalogInput("right")
     local topInput = p.inputs.xyz.getAnalogInput("top")
@@ -71,6 +73,7 @@ function ____exports.pullState()
     return ____exports.state
 end
 function ____exports.peripheralsSetup()
+    showHeader("Peripheral Setup")
     for ____, ____value in ipairs(__TS__ObjectEntries(____exports.cfg.data)) do
         local _s = ____value[1]
         local _p = ____value[2]
@@ -81,8 +84,24 @@ function ____exports.peripheralsSetup()
             local key = _k
             local p = ____exports.peripherals[section][key]
             while not p do
-                print((((("Peripheral " .. section) .. ".") .. tostring(key)) .. " not found on side ") .. side)
-                side = read()
+                print("")
+                print(((((section .. ".") .. tostring(key)) .. " (") .. side) .. "):")
+                term.write("> ")
+                side = read(
+                    nil,
+                    {side},
+                    function(p)
+                        return __TS__ArrayMap(
+                            __TS__ArrayFilter(
+                                peripheral.getNames(),
+                                function(____, pp) return __TS__StringStartsWith(pp, p) end
+                            ),
+                            function(____, pp) return __TS__StringSlice(pp, #p) end
+                        )
+                    end,
+                    ""
+                )
+                print("")
                 p = peripheral.wrap(side)
             end
             ____exports.cfg:set(section, key, side)
@@ -93,6 +112,7 @@ function ____exports.peripheralsSetup()
 end
 do
     local function ____catch(e)
+        printError(e)
         ____exports.peripheralsSetup()
         ____exports.pullState()
         anyKey()

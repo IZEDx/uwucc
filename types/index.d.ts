@@ -1,5 +1,6 @@
 /// <reference types="./aeronautics.d.ts" />
 /// <reference types="./cc.d.ts" />
+/// <reference types="./ccsable.d.ts" />
 /// <reference types="./crafts_additions.d.ts" />
 /// <reference types="./directgpu.d.ts" />
 
