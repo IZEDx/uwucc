@@ -58,6 +58,28 @@ export class Node<P extends UwUi.Props = any, C extends UwUi.Children = any> {
 		}
 	};
 
+	input(event: DirectGPU.InputEvent): boolean {
+		if (!this.gpu) return false;
+		const { x, y } = event;
+		const { x: minX, y: minY, w, h } = this.gpu?.clip!;
+		const maxX = minX + w;
+		const maxY = minY + h;
+		if (x > minX && x < maxX && y > minY && y < maxY) {
+			let wasHandled = false;
+			for (const child of this.children) {
+				if (child.input(event)) {
+					wasHandled = true;
+				}
+			}
+			if (!wasHandled && this.props.onInput) {
+				this.props.onInput(event);
+				return true;
+			}
+			return wasHandled;
+		}
+		return false;
+	}
+
 	render(gpu: GPUView) {
 		const prevNode = Node.current;
 		Node.current = this;

@@ -40,6 +40,7 @@ const cfg = controller.cfg.extend({
 }).data;
 
 showHeader(":3");
+print("huh");
 const vel: Velocity = { x: 0, y: 0, z: 0 };
 
 function inputLoop(): void {

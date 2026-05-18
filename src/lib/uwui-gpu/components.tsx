@@ -10,6 +10,8 @@ export type BoxProps = Partial<Section> & {
 	radius?: number;
 	filled?: boolean;
 	debug?: boolean;
+	/** @noSelf */
+	onInput?: (e: DirectGPU.InputEvent) => void;
 };
 
 export function Box(props: BoxProps, ...children: any[]) {

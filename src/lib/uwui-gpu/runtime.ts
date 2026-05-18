@@ -1,11 +1,14 @@
 import { Node } from "./node";
 import { GPUView } from "./gpu-view";
 import { log } from "../util";
+import { printValue } from "../chalk";
 
 export namespace UwUi {
 	export type Child = string | number | Node | undefined | Child[];
 	export type Props = Record<string, any> & {
 		key?: string;
+		/** @noSelf */
+		onInput?: (event: DirectGPU.InputEvent) => void;
 	};
 	export type Children = Child[];
 
@@ -61,6 +64,31 @@ export namespace UwUi {
 					while (true) {
 						const e = os.pullEvent();
 						if (e[0] === "Terminate") return;
+					}
+				},
+				() => {
+					while (true) {
+						if (gpu.hasEvents(display)) {
+							const event = gpu.pollEvent(display);
+							if (event && event.type && event.x && event.y) {
+								tree.input(event);
+							}
+						}
+						/*
+						local event = gpu.pollEvent(display)
+
+						if event and event.type == "mouse_click" then
+							drawing = true
+							points = {{event.x, event.y}}
+						elseif event and event.type == "mouse_drag" and drawing then
+							table.insert(points, {event.x, event.y})
+							gpu.drawPolylines(display, points, 0, 255, 255)
+							gpu.updateDisplay(display)
+						elseif event and event.type == "mouse_up" then
+							drawing = false
+						end
+						*/
+						sleep(0.05);
 					}
 				},
 			);

@@ -121,12 +121,14 @@ declare namespace DirectGPU {
 		[key: string]: unknown;
 	}
 
+	export type MouseButton = 0 | 1 | 2 | 3 | 4 | 5;
+
 	export interface InputEvent {
-		type: "mouse_click" | "mouse_drag" | "mouse_up" | string;
+		type: "mouse_click" | "mouse_drag" | "mouse_up" | "mouse_hover";
 		x: number;
 		y: number;
-		button?: number;
-		[key: string]: unknown;
+		button: MouseButton;
+		timestamp: number;
 	}
 
 	export interface MetaballInfo {

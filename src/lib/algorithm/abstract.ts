@@ -1,6 +1,7 @@
 import { Config } from "../config";
 import { History } from "../history";
 import { pairs } from "../util";
+import { signal } from "../uwui-gpu/signal";
 
 export namespace Algorithm {
 	export type State = {
@@ -15,6 +16,7 @@ export abstract class Algorithm<
 	P extends Record<string, any> = Record<string, any>,
 	S extends Record<string, any> = Record<string, any>,
 > {
+	disabled = signal(false);
 	sensorHistory = new History<number>();
 	targetHistory = new History<number>();
 	errorHistory = new History<number>();
@@ -40,7 +42,11 @@ export abstract class Algorithm<
 		this.targetHistory.add(target);
 		this.state.error = target - current;
 		this.errorHistory.add(this.state.error);
-		this.state.output = this.onCompute(this.state.error, dt);
+		if (this.disabled.value) {
+			this.state.output = 0;
+		} else {
+			this.state.output = this.onCompute(this.state.error, dt);
+		}
 		return this.state.output;
 	}
 	abstract onCompute(error: number, dt: number): number;

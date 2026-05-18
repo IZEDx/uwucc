@@ -5,13 +5,14 @@ package.path = package.path .. ";../../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__ObjectEntries = ____lualib.__TS__ObjectEntries
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["6"] = 1,["7"] = 1,["8"] = 1,["9"] = 1,["10"] = 1,["11"] = 1,["12"] = 3,["13"] = 3,["14"] = 4,["15"] = 4,["16"] = 37,["17"] = 38,["18"] = 39,["19"] = 40,["21"] = 42,["22"] = 42,["23"] = 41,["25"] = 42,["27"] = 42,["28"] = 42,["29"] = 42,["30"] = 42,["33"] = 41,["34"] = 45,["35"] = 45,["36"] = 45,["37"] = 45,["38"] = 45,["39"] = 45,["40"] = 45,["42"] = 46,["43"] = 46,["44"] = 45,["45"] = 46,["47"] = 46,["48"] = 46,["49"] = 46,["50"] = 46,["52"] = 47,["54"] = 45,["55"] = 41,["57"] = 50,["59"] = 50,["60"] = 50,["63"] = 50,["64"] = 50,["66"] = 51,["67"] = 41,["68"] = 41,["69"] = 37,["70"] = 6,["71"] = 7,["72"] = 8,["73"] = 8,["74"] = 8,["75"] = 9,["76"] = 10,["78"] = 10,["79"] = 10,["80"] = 10,["83"] = 11,["85"] = 12,["86"] = 13,["87"] = 14,["88"] = 15,["89"] = 16,["90"] = 17,["91"] = 18,["93"] = 20,["96"] = 22,["98"] = 23,["99"] = 24,["100"] = 25,["101"] = 26,["102"] = 27,["103"] = 28,["104"] = 29,["106"] = 31,["109"] = 6});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["6"] = 2,["7"] = 2,["8"] = 2,["9"] = 2,["10"] = 2,["11"] = 2,["12"] = 2,["13"] = 4,["14"] = 4,["15"] = 5,["16"] = 5,["17"] = 39,["18"] = 40,["19"] = 41,["20"] = 42,["22"] = 44,["23"] = 44,["24"] = 43,["26"] = 44,["28"] = 44,["29"] = 44,["30"] = 44,["31"] = 44,["34"] = 43,["35"] = 47,["36"] = 47,["37"] = 47,["38"] = 47,["39"] = 47,["40"] = 47,["41"] = 47,["42"] = 48,["44"] = 50,["45"] = 52,["46"] = 49,["47"] = 50,["49"] = 51,["50"] = 52,["51"] = 53,["52"] = 54,["53"] = 55,["54"] = 56,["55"] = 56,["56"] = 56,["57"] = 56,["58"] = 56,["59"] = 58,["62"] = 59,["63"] = 60,["64"] = 61,["65"] = 62,["67"] = 56,["70"] = 66,["72"] = 67,["73"] = 68,["76"] = 71,["77"] = 72,["79"] = 74,["82"] = 47,["83"] = 43,["85"] = 79,["87"] = 79,["88"] = 79,["91"] = 79,["92"] = 79,["94"] = 80,["95"] = 43,["96"] = 43,["97"] = 39,["98"] = 7,["99"] = 8,["100"] = 9,["101"] = 10,["102"] = 10,["103"] = 10,["104"] = 11,["105"] = 12,["107"] = 12,["108"] = 12,["109"] = 12,["112"] = 13,["114"] = 14,["115"] = 15,["116"] = 16,["117"] = 17,["118"] = 18,["119"] = 19,["120"] = 20,["122"] = 22,["125"] = 24,["127"] = 25,["128"] = 26,["129"] = 27,["130"] = 28,["131"] = 29,["132"] = 30,["133"] = 31,["135"] = 33,["138"] = 7});
 local ____exports = {}
 local ____uwui = require("lib.uwui-gpu.uwui")
 local Box = ____uwui.Box
 local each = ____uwui.each
 local Text = ____uwui.Text
 local useGPU = ____uwui.useGPU
+local useSignal = ____uwui.useSignal
 local UwUi = ____uwui.UwUi
 local ____graphs = require("drone.uwui.graphs")
 local Graphs = ____graphs.Graphs
@@ -42,18 +43,45 @@ function ____exports.Status(props)
                 local name
                 name = ____bindingPattern0[1]
                 input = ____bindingPattern0[2]
+                local algo = props.controller.algos[name]
                 local ____UwUi_node_4 = UwUi.node
-                local ____Text_3 = Text
-                y = y + 20
+                local ____Box_3 = Box
+                y = y + 35
                 return ____UwUi_node_4(
-                    ____Text_3,
+                    ____Box_3,
                     {
                         x = 10,
                         y = y,
-                        size = 16,
-                        color = palette.text(2)
+                        w = -10,
+                        h = 30,
+                        bg = palette.bg(algo.disabled.value and 3 or 4),
+                        onInput = function(____, ____bindingPattern0)
+                            local button
+                            local ____type
+                            ____type = ____bindingPattern0.type
+                            button = ____bindingPattern0.button
+                            if ____type ~= "mouse_click" then
+                                return
+                            end
+                            if button == 1 then
+                                props.algo.value = algo
+                            elseif button == 2 then
+                                algo.disabled.value = not algo.disabled.value
+                            end
+                        end
                     },
-                    string.format("%s: %.2f", name, input)
+                    UwUi.node(
+                        Text,
+                        {
+                            x = 0.5,
+                            y = 0.5,
+                            align = "middle",
+                            justify = "center",
+                            size = 16,
+                            color = palette.text(2)
+                        },
+                        string.format("%s: %.2f", name, input)
+                    )
                 )
             end
         ),
@@ -73,6 +101,7 @@ function ____exports.Status(props)
 end
 function ____exports.Dashboard(props)
     local gpu = useGPU()
+    local algo = useSignal(props.controller.algos.alt)
     local ____gpu_clip_0 = gpu.clip
     local w = ____gpu_clip_0.w
     local h = ____gpu_clip_0.h
@@ -94,7 +123,7 @@ function ____exports.Dashboard(props)
                 radius = 20,
                 border = palette.bg(5)
             },
-            UwUi.node(____exports.Status, {controller = props.controller})
+            UwUi.node(____exports.Status, {controller = props.controller, algo = algo})
         ),
         UwUi.node(
             Box,
@@ -107,7 +136,7 @@ function ____exports.Dashboard(props)
                 radius = 20,
                 border = palette.bg(5)
             },
-            UwUi.node(Graphs, {controller = props.controller})
+            UwUi.node(Graphs, {algo = algo})
         )
     )
 end

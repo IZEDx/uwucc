@@ -25,7 +25,7 @@ function ____exports.Graphs(props)
             w = -20,
             h = -10
         },
-        UwUi.node(AltitudeGraph, {algo = props.controller.algos.alt})
+        UwUi.node(AltitudeGraph, {algo = props.algo.value})
     )
 end
 return ____exports

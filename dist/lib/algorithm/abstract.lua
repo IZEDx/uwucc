@@ -8,12 +8,14 @@ local __TS__New = ____lualib.__TS__New
 local __TS__ObjectAssign = ____lualib.__TS__ObjectAssign
 local __TS__SetDescriptor = ____lualib.__TS__SetDescriptor
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["9"] = 2,["10"] = 2,["11"] = 3,["12"] = 3,["13"] = 14,["14"] = 14,["15"] = 14,["16"] = 25,["17"] = 25,["18"] = 26,["19"] = 27,["20"] = 28,["21"] = 18,["22"] = 19,["23"] = 20,["24"] = 30,["25"] = 30,["26"] = 30,["27"] = 31,["29"] = 33,["30"] = 24,["31"] = 36,["32"] = 37,["33"] = 38,["34"] = 39,["35"] = 40,["36"] = 41,["37"] = 42,["38"] = 43,["39"] = 44,["40"] = 36,["41"] = 60,["42"] = 61,["43"] = 60,["49"] = 54,["50"] = 55,["51"] = 56,["52"] = 57,["54"] = 48,["55"] = 49,["56"] = 50});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["9"] = 2,["10"] = 2,["11"] = 3,["12"] = 3,["13"] = 4,["14"] = 4,["15"] = 15,["16"] = 15,["17"] = 15,["18"] = 27,["19"] = 27,["20"] = 28,["21"] = 29,["22"] = 30,["23"] = 19,["24"] = 20,["25"] = 21,["26"] = 22,["27"] = 32,["28"] = 32,["29"] = 32,["30"] = 33,["32"] = 35,["33"] = 26,["34"] = 38,["35"] = 39,["36"] = 40,["37"] = 41,["38"] = 42,["39"] = 43,["40"] = 44,["41"] = 45,["42"] = 46,["44"] = 48,["46"] = 50,["47"] = 38,["48"] = 66,["49"] = 67,["50"] = 66,["56"] = 60,["57"] = 61,["58"] = 62,["59"] = 63,["61"] = 54,["62"] = 55,["63"] = 56});
 local ____exports = {}
 local ____history = require("lib.history")
 local History = ____history.History
 local ____util = require("lib.util")
 local ____pairs = ____util.pairs
+local ____signal = require("lib.uwui-gpu.signal")
+local signal = ____signal.signal
 ____exports.Algorithm = __TS__Class()
 local Algorithm = ____exports.Algorithm
 Algorithm.name = "Algorithm"
@@ -22,6 +24,7 @@ function Algorithm.prototype.____constructor(self, name, config, defaultParamete
     self.config = config
     self.defaultParameters = defaultParameters
     self.defaultState = defaultState
+    self.disabled = signal(false)
     self.sensorHistory = __TS__New(History)
     self.targetHistory = __TS__New(History)
     self.errorHistory = __TS__New(History)
@@ -39,7 +42,11 @@ function Algorithm.prototype.compute(self, current, target, dt)
     self.targetHistory:add(target)
     self.state.error = target - current
     self.errorHistory:add(self.state.error)
-    self.state.output = self:onCompute(self.state.error, dt)
+    if self.disabled.value then
+        self.state.output = 0
+    else
+        self.state.output = self:onCompute(self.state.error, dt)
+    end
     return self.state.output
 end
 function Algorithm.prototype.reset(self)

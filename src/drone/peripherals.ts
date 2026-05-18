@@ -186,8 +186,14 @@ export function applyThrusts(thrusts: Thrusts): void {
 				const oldSpeed = speeds[name] || invert * rotor.getSpeed();
 				const newSpeed = clamp(round(thrust * 256), -256, 256);
 				if (newSpeed !== oldSpeed) {
-					rotor.setSpeed(invert * newSpeed);
-					speeds[name] = newSpeed;
+					const s = invert * newSpeed;
+					if (isNaN(s)) {
+						rotor.stop();
+						printError("Tried setting rotor " + name + " to NaN");
+					} else {
+						rotor.setSpeed(s);
+						speeds[name] = newSpeed;
+					}
 				}
 			}
 		}),
