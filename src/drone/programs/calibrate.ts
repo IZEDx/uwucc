@@ -10,7 +10,10 @@ const ANGLE_THRESHOLD = 1;
 const SETTLE_TIME = 1;
 const TARGET_HEIGHT = 3;
 
-const controller = new Controller();
+const controller = new Controller({
+	load: false,
+	tick: false,
+});
 controller.inputs = {
 	alt: controller.inputs.alt,
 	velF: 0,
@@ -35,12 +38,7 @@ function calibrationLoop(): void {
 
 	// Disable PID tuning for calibration
 	for (const pid of Object.values(controller.algos)) {
-		pid.tuning = {
-			kp: 0,
-			ki: 0,
-			kd: 0,
-			iMax: 1,
-		};
+		pid.disabled.value = true;
 		pid.reset();
 	}
 
@@ -116,7 +114,7 @@ function calibrationLoop(): void {
 			settleTime = 0;
 		} else {
 			//base = math.min(base + TRIM_STEP * 0.5, hoverBase * 1.5);
-			settleTime += controller.status.dt;
+			settleTime += controller.status.value.dt;
 		}
 
 		if (sensors.alt - originAlt > 0.5) {
@@ -163,12 +161,4 @@ function calibrationLoop(): void {
 	}
 }
 
-program(
-	controller.loop({
-		display: true,
-		quit: true,
-		load: false,
-		tick: false,
-	}),
-	calibrationLoop,
-);
+program(controller.loop(), calibrationLoop);
