@@ -1,6 +1,3 @@
--- startup.ts
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["startup.ts"] = _G.__tracetrace["startup.ts"] or {}
 local ____lualib = require("lualib_bundle")
 local __TS__New = ____lualib.__TS__New
 local __TS__StringEndsWith = ____lualib.__TS__StringEndsWith

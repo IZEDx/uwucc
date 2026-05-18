@@ -1,6 +1,3 @@
--- drone/uwui/altitudeGraph.tsx
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["drone/uwui/altitudeGraph.tsx"] = _G.__tracetrace["drone/uwui/altitudeGraph.tsx"] or {}
 package.path = package.path .. ";../../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack

@@ -1,6 +1,3 @@
--- gpu/programs/example.tsx
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["gpu/programs/example.tsx"] = _G.__tracetrace["gpu/programs/example.tsx"] or {}
 package.path = package.path .. ";../../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__ObjectAssign = ____lualib.__TS__ObjectAssign

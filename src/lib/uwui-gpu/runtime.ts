@@ -53,6 +53,7 @@ export namespace UwUi {
 						frame += 1;
 						parallel.waitForAll(
 							() => {
+								gpu.clearZBuffer(display);
 								tree.render(rootView);
 								gpu.updateDisplay(display);
 							},

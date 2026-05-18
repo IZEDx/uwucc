@@ -1,6 +1,3 @@
--- programs/stop.ts
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["programs/stop.ts"] = _G.__tracetrace["programs/stop.ts"] or {}
 package.path = package.path .. ";../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__StringStartsWith = ____lualib.__TS__StringStartsWith

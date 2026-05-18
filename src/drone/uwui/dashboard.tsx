@@ -1,6 +1,8 @@
 import { LAC } from "../../lib/algorithm/lac";
+import { Model, Scene } from "../../lib/uwui-gpu/components";
 import { Box, each, Signal, Text, useGPU, useSignal, UwUi } from "../../lib/uwui-gpu/uwui";
 import { Controller } from "../controller";
+import { state } from "../peripherals";
 import { Graphs } from "./graphs";
 import { palette } from "./palette";
 
@@ -32,6 +34,23 @@ export function Dashboard(props: { controller: Controller }) {
 			>
 				<Graphs algo={algo} />
 			</Box>
+			{/*
+			<Scene>
+				<Model
+					file="disk/static/Drone_Icon_UI_MC2.obj"
+					rot={() => ({
+						pitch: 360 - state.pitch,
+						yaw: 260,
+						roll: state.roll,
+					})}
+					pos={() => ({
+						x: 0,
+						y: -algo.value.state.error,
+						z: 0,
+					})}
+				/>
+			</Scene>
+			*/}
 		</Box>
 	);
 }

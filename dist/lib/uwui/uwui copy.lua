@@ -1,6 +1,3 @@
--- lib/uwui/uwui copy.ts
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["lib/uwui/uwui copy.ts"] = _G.__tracetrace["lib/uwui/uwui copy.ts"] or {}
 package.path = package.path .. ";../../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class

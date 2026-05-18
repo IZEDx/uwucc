@@ -1,6 +1,3 @@
--- lib/pipe.ts
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["lib/pipe.ts"] = _G.__tracetrace["lib/pipe.ts"] or {}
 package.path = package.path .. ";../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__Promise = ____lualib.__TS__Promise

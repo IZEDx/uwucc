@@ -1,6 +1,3 @@
--- lib/math.ts
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["lib/math.ts"] = _G.__tracetrace["lib/math.ts"] or {}
 package.path = package.path .. ";../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__NumberToFixed = ____lualib.__TS__NumberToFixed

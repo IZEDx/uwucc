@@ -1,6 +1,3 @@
--- lib/uwui-gpu/hooks.ts
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["lib/uwui-gpu/hooks.ts"] = _G.__tracetrace["lib/uwui-gpu/hooks.ts"] or {}
 package.path = package.path .. ";../../?.lua"
 local ____lualib = require("lualib_bundle")
 local Error = ____lualib.Error

@@ -122,9 +122,8 @@ export function pullState() {
 
 	const [pitch, yaw, roll] = pose.orientation.toEuler();
 	//const angles = p.sensors.gimbal.getAngles();
-	const r = 180 / Math.PI;
-	state.pitch = roll * r; // -angles[1];
-	state.roll = pitch * r; // angles[0];
+	state.pitch = math.deg(roll); // -angles[1];
+	state.roll = math.deg(pitch); // angles[0];
 
 	const leftInput = p.inputs.xyz.getAnalogInput("left");
 	const rightInput = p.inputs.xyz.getAnalogInput("right");

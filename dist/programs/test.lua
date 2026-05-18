@@ -1,6 +1,3 @@
--- programs/test.ts
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["programs/test.ts"] = _G.__tracetrace["programs/test.ts"] or {}
 package.path = package.path .. ";../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack

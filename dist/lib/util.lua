@@ -1,6 +1,3 @@
--- lib/util.ts
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["lib/util.ts"] = _G.__tracetrace["lib/util.ts"] or {}
 package.path = package.path .. ";../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__ObjectEntries = ____lualib.__TS__ObjectEntries

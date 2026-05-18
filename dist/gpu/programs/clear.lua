@@ -1,6 +1,3 @@
--- gpu/programs/clear.ts
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["gpu/programs/clear.ts"] = _G.__tracetrace["gpu/programs/clear.ts"] or {}
 package.path = package.path .. ";../../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack

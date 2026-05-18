@@ -1,6 +1,3 @@
--- drone/controller.ts
-_G.__tracetrace = _G.__tracetrace or {}
-_G.__tracetrace["drone/controller.ts"] = _G.__tracetrace["drone/controller.ts"] or {}
 package.path = package.path .. ";../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__New = ____lualib.__TS__New

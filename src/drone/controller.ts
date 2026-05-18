@@ -6,6 +6,7 @@ import { KeyEvent, pullEventAs } from "../lib/events";
 import { Algorithm } from "../lib/algorithm/abstract";
 import { LAC } from "../lib/algorithm/lac";
 import { signal } from "../lib/uwui-gpu/signal";
+import { lerp } from "../lib/math";
 
 export const parts = ["alt", "velF", "velR", "pitch", "roll"] as const;
 
@@ -138,10 +139,19 @@ export class Controller {
 		let altCmd = this.algos.alt.compute(sensors.alt, targets.alt, status.avgDt);
 		//altCmd = altCmd > 0 ? altCmd / sensors.airP : altCmd * sensors.airP;
 
-		status.base = clamp(cfg.base.hover + altCmd, cfg.base.min, cfg.base.max);
+		status.base = clamp(
+			(cfg.base.hover + altCmd) * (1 - sensors.airP / 2),
+			cfg.base.min,
+			cfg.base.max,
+		);
 
 		// Velocity to pitch/roll control
-		const velFCmd = this.algos.velF.compute(sensors.velF, targets.velF, status.dt);
+		const prevVelF = this.algos.velF.sensorHistory.youngest() || 0;
+		const velFCmd = this.algos.velF.compute(
+			lerp(prevVelF, sensors.velF, 0.2),
+			targets.velF,
+			status.dt,
+		);
 		const maxPitch = this.cfg.data.controller.max_pitch;
 		const pitchTarget = clamp(targets.pitch - velFCmd * maxPitch, -maxPitch, maxPitch);
 		const pitchCmd = this.algos.pitch.compute(sensors.pitch, pitchTarget, status.dt);

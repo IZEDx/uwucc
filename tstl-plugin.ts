@@ -58,10 +58,10 @@ const plugin: tstl.Plugin = {
 				output =
 					`package.path = package.path .. ";${"../".repeat(subdirs)}?.lua"\n` + output;
 			}
-			output =
-				`_G.__tracetrace["${fileName}"] = _G.__tracetrace["${fileName}"] or {}\n` + output;
-			output = "_G.__tracetrace = _G.__tracetrace or {}\n" + output;
-			output = `-- ${fileName}\n` + output;
+			//output =
+			//	`_G.__tracetrace["${fileName}"] = _G.__tracetrace["${fileName}"] or {}\n` + output;
+			//output = "_G.__tracetrace = _G.__tracetrace or {}\n" + output;
+			//output = `-- ${fileName}\n` + output;
 			file.code = output
 				.split("\n")
 				.map((text, i) => text.replaceAll("%%_LINE_%%", "" + (i - 2)))
@@ -72,8 +72,14 @@ const plugin: tstl.Plugin = {
 		if (_copyStatic) {
 			_copyStatic = false;
 			const dir = resolve("./static");
-			copySync(dir, join(options.outDir ?? join(dir, "dist"), "static"));
-			console.log(dir);
+			try {
+				copySync(dir, join(options.outDir ?? join(dir, "dist"), "static"), {
+					overwrite: false,
+					errorOnExist: false,
+				});
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	},
 	/*
