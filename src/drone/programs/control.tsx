@@ -1,7 +1,7 @@
 import { program } from "../../lib/program";
 import { Controller } from "../controller";
 import { clamp } from "../../lib/util";
-import { state, stopRotors } from "../peripherals";
+import { peripherals, state, stopRotors } from "../peripherals";
 import { showHeader } from "../../lib/chalk";
 import { UwUi } from "../../lib/uwui-gpu/runtime";
 import { Dashboard } from "../uwui/dashboard";

@@ -3,11 +3,12 @@ local ____lualib = require("lualib_bundle")
 local __TS__New = ____lualib.__TS__New
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ObjectValues = ____lualib.__TS__ObjectValues
+local __TS__ArrayReduce = ____lualib.__TS__ArrayReduce
 local __TS__SparseArrayNew = ____lualib.__TS__SparseArrayNew
 local __TS__SparseArrayPush = ____lualib.__TS__SparseArrayPush
 local __TS__SparseArraySpread = ____lualib.__TS__SparseArraySpread
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["11"] = 2,["12"] = 2,["13"] = 3,["14"] = 3,["15"] = 3,["16"] = 3,["17"] = 4,["18"] = 4,["19"] = 4,["20"] = 4,["21"] = 4,["22"] = 4,["23"] = 5,["24"] = 5,["25"] = 5,["26"] = 7,["27"] = 7,["28"] = 8,["29"] = 8,["30"] = 9,["31"] = 9,["32"] = 11,["33"] = 11,["34"] = 11,["35"] = 11,["36"] = 11,["37"] = 11,["38"] = 11,["39"] = 13,["40"] = 14,["41"] = 13,["42"] = 56,["43"] = 56,["44"] = 56,["45"] = 65,["46"] = 65,["47"] = 65,["49"] = 65,["50"] = 62,["51"] = 63,["52"] = 66,["53"] = 67,["54"] = 69,["55"] = 69,["56"] = 69,["57"] = 69,["58"] = 69,["59"] = 69,["60"] = 69,["61"] = 77,["62"] = 77,["63"] = 77,["64"] = 77,["65"] = 77,["66"] = 77,["67"] = 77,["68"] = 84,["69"] = 65,["70"] = 87,["71"] = 88,["72"] = 89,["73"] = 87,["74"] = 92,["75"] = 93,["76"] = 94,["77"] = 95,["79"] = 97,["80"] = 98,["81"] = 98,["82"] = 98,["83"] = 98,["84"] = 98,["85"] = 98,["86"] = 98,["87"] = 98,["88"] = 98,["89"] = 92,["90"] = 109,["91"] = 110,["92"] = 111,["94"] = 109,["95"] = 115,["96"] = 115,["97"] = 115,["99"] = 116,["100"] = 117,["101"] = 118,["102"] = 120,["103"] = 121,["104"] = 122,["105"] = 123,["106"] = 124,["107"] = 127,["108"] = 128,["110"] = 130,["111"] = 130,["112"] = 132,["113"] = 133,["114"] = 134,["116"] = 136,["117"] = 139,["118"] = 142,["119"] = 149,["120"] = 150,["121"] = 150,["122"] = 150,["123"] = 150,["124"] = 150,["125"] = 155,["126"] = 156,["127"] = 157,["128"] = 159,["129"] = 160,["130"] = 161,["131"] = 162,["132"] = 165,["133"] = 166,["134"] = 168,["135"] = 170,["136"] = 171,["137"] = 172,["138"] = 173,["140"] = 170,["141"] = 170,["142"] = 170,["143"] = 115,["144"] = 180,["145"] = 181,["146"] = 182,["147"] = 183,["148"] = 184,["149"] = 185,["150"] = 186,["151"] = 188,["152"] = 188,["153"] = 190,["154"] = 191,["155"] = 192,["156"] = 193,["158"] = 195,["160"] = 188,["161"] = 198,["162"] = 199,["163"] = 200,["164"] = 201,["165"] = 203,["169"] = 188,["170"] = 208,["171"] = 209,["172"] = 210,["173"] = 211,["175"] = 213,["178"] = 188,["179"] = 217,["180"] = 218,["181"] = 219,["182"] = 220,["183"] = 221,["185"] = 223,["188"] = 188,["189"] = 188,["190"] = 181,["191"] = 180,["192"] = 231,["193"] = 232,["194"] = 233,["195"] = 234,["196"] = 235,["197"] = 236,["198"] = 237,["199"] = 238,["200"] = 240,["201"] = 240,["202"] = 240,["203"] = 242,["204"] = 242,["205"] = 242,["206"] = 242,["207"] = 242,["208"] = 242,["209"] = 242,["210"] = 240,["211"] = 240,["212"] = 240,["213"] = 252,["215"] = 253,["216"] = 253,["217"] = 253,["218"] = 253,["219"] = 253,["220"] = 253,["221"] = 253,["222"] = 253,["223"] = 254,["227"] = 255,["231"] = 256,["235"] = 257,["239"] = 258,["241"] = 252,["242"] = 260,["243"] = 261,["244"] = 261,["245"] = 263,["246"] = 263,["247"] = 263,["248"] = 263,["249"] = 261,["250"] = 264,["251"] = 264,["252"] = 264,["253"] = 264,["254"] = 261,["255"] = 261,["256"] = 267,["257"] = 231});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["12"] = 2,["13"] = 2,["14"] = 3,["15"] = 3,["16"] = 3,["17"] = 3,["18"] = 4,["19"] = 4,["20"] = 4,["21"] = 4,["22"] = 4,["23"] = 4,["24"] = 5,["25"] = 5,["26"] = 5,["27"] = 7,["28"] = 7,["29"] = 8,["30"] = 8,["31"] = 9,["32"] = 9,["33"] = 11,["34"] = 11,["35"] = 11,["36"] = 11,["37"] = 11,["38"] = 11,["39"] = 11,["40"] = 11,["41"] = 13,["42"] = 14,["43"] = 13,["44"] = 56,["45"] = 56,["46"] = 56,["47"] = 65,["48"] = 65,["49"] = 65,["51"] = 65,["52"] = 62,["53"] = 63,["54"] = 66,["55"] = 67,["56"] = 69,["57"] = 69,["58"] = 69,["59"] = 69,["60"] = 69,["61"] = 69,["62"] = 69,["63"] = 69,["64"] = 78,["65"] = 78,["66"] = 78,["67"] = 78,["68"] = 78,["69"] = 78,["70"] = 78,["71"] = 78,["72"] = 86,["73"] = 65,["74"] = 89,["75"] = 90,["76"] = 91,["77"] = 89,["78"] = 94,["79"] = 95,["80"] = 96,["81"] = 97,["83"] = 99,["84"] = 100,["85"] = 100,["86"] = 100,["87"] = 100,["88"] = 100,["89"] = 100,["90"] = 100,["91"] = 100,["92"] = 100,["93"] = 94,["94"] = 111,["95"] = 112,["96"] = 113,["98"] = 111,["99"] = 117,["100"] = 117,["101"] = 117,["103"] = 118,["104"] = 119,["105"] = 120,["106"] = 122,["107"] = 124,["108"] = 125,["109"] = 126,["110"] = 127,["111"] = 129,["112"] = 129,["114"] = 130,["115"] = 130,["116"] = 132,["117"] = 132,["118"] = 132,["119"] = 132,["120"] = 132,["121"] = 135,["122"] = 138,["123"] = 140,["124"] = 140,["125"] = 140,["126"] = 140,["127"] = 140,["128"] = 146,["129"] = 149,["130"] = 150,["131"] = 150,["132"] = 150,["133"] = 150,["134"] = 150,["135"] = 156,["136"] = 157,["137"] = 158,["138"] = 160,["139"] = 162,["140"] = 163,["141"] = 164,["142"] = 166,["143"] = 167,["144"] = 169,["145"] = 171,["146"] = 172,["147"] = 172,["149"] = 173,["150"] = 171,["151"] = 117,["152"] = 177,["153"] = 178,["154"] = 179,["155"] = 180,["156"] = 181,["157"] = 182,["158"] = 183,["159"] = 185,["160"] = 185,["161"] = 187,["162"] = 188,["163"] = 189,["164"] = 190,["166"] = 192,["168"] = 185,["169"] = 195,["170"] = 196,["171"] = 197,["172"] = 198,["173"] = 200,["177"] = 185,["178"] = 205,["179"] = 206,["180"] = 207,["181"] = 208,["183"] = 210,["186"] = 185,["187"] = 214,["188"] = 215,["189"] = 216,["190"] = 217,["191"] = 218,["193"] = 220,["196"] = 185,["197"] = 185,["198"] = 178,["199"] = 177,["200"] = 228,["201"] = 229,["202"] = 230,["203"] = 231,["204"] = 232,["205"] = 233,["206"] = 234,["207"] = 235,["208"] = 237,["209"] = 237,["210"] = 237,["211"] = 239,["212"] = 239,["213"] = 239,["214"] = 239,["215"] = 239,["216"] = 239,["217"] = 239,["218"] = 237,["219"] = 237,["220"] = 237,["221"] = 249,["223"] = 250,["224"] = 250,["225"] = 250,["226"] = 250,["227"] = 250,["228"] = 250,["229"] = 250,["230"] = 250,["231"] = 251,["235"] = 252,["239"] = 253,["243"] = 254,["247"] = 255,["249"] = 249,["250"] = 257,["251"] = 258,["252"] = 258,["253"] = 260,["254"] = 260,["255"] = 260,["256"] = 260,["257"] = 258,["258"] = 261,["259"] = 261,["260"] = 261,["261"] = 261,["262"] = 258,["263"] = 258,["264"] = 264,["265"] = 228});
 local ____exports = {}
 local ____config = require("lib.config")
 local Config = ____config.Config
@@ -33,6 +34,7 @@ local lerp = ____math.lerp
 ____exports.parts = {
     "alt",
     "velF",
+    "velU",
     "velR",
     "pitch",
     "roll"
@@ -55,12 +57,14 @@ function Controller.prototype.____constructor(self, options)
     self.inputs = {
         alt = sensors.alt,
         velF = 0,
+        velU = 0,
         velR = 0,
         pitch = 0,
         roll = 0
     }
     self.algos = {
         alt = __TS__New(LAC, "alt", self.tunings),
+        velU = __TS__New(LAC, "velU", self.tunings),
         velF = __TS__New(LAC, "velF", self.tunings),
         velR = __TS__New(LAC, "velR", self.tunings),
         pitch = __TS__New(LAC, "pitch", self.tunings),
@@ -110,37 +114,41 @@ function Controller.prototype.tick(self, noApply)
     end
     local ____self__lastDts_0 = self._lastDts
     ____self__lastDts_0[#____self__lastDts_0 + 1] = status.dt
-    local dtSum = 0
-    for ____, dt in ipairs(self._lastDts) do
-        dtSum = dtSum + dt
-    end
-    status.avgDt = dtSum / 4
-    local altCmd = self.algos.alt:compute(sensors.alt, targets.alt, status.avgDt)
-    status.base = clamp((cfg.base.hover + altCmd) * (1 - sensors.airP / 2), cfg.base.min, cfg.base.max)
+    status.avgDt = __TS__ArrayReduce(
+        self._lastDts,
+        function(____, a, b) return a + b end,
+        0
+    ) / #self._lastDts
+    local velUTarget = self.algos.alt:compute(sensors.alt, targets.alt, status.avgDt)
+    local prevVelU = self.algos.velU.sensorHistory:youngest() or 0
+    local velUCmd = self.algos.velU:compute(
+        lerp(prevVelU, sensors.velU, 0.2),
+        velUTarget,
+        status.avgDt
+    )
+    status.base = clamp(cfg.base.hover + velUCmd, cfg.base.min, cfg.base.max)
     local prevVelF = self.algos.velF.sensorHistory:youngest() or 0
     local velFCmd = self.algos.velF:compute(
         lerp(prevVelF, sensors.velF, 0.2),
         targets.velF,
-        status.dt
+        status.avgDt
     )
-    local maxPitch = self.cfg.data.controller.max_pitch
+    local maxPitch = cfg.controller.max_pitch
     local pitchTarget = clamp(targets.pitch - velFCmd * maxPitch, -maxPitch, maxPitch)
-    local pitchCmd = self.algos.pitch:compute(sensors.pitch, pitchTarget, status.dt)
-    local velRCmd = self.algos.velR:compute(sensors.velR, targets.velR, status.dt)
-    local maxRoll = self.cfg.data.controller.max_roll
+    local pitchCmd = self.algos.pitch:compute(sensors.pitch, pitchTarget, status.avgDt)
+    local velRCmd = self.algos.velR:compute(sensors.velR, targets.velR, status.avgDt)
+    local maxRoll = cfg.controller.max_roll
     local rollTarget = clamp(targets.roll + velRCmd * maxRoll, -maxRoll, maxRoll)
-    local rollCmd = self.algos.roll:compute(sensors.roll, rollTarget, status.dt)
+    local rollCmd = self.algos.roll:compute(sensors.roll, rollTarget, status.avgDt)
     status.thrusts = computeRotorThrusts(status.base, pitchCmd, rollCmd, cfg.trims)
     normalizeThrusts(status.thrusts)
     self.status.value = status
-    parallel.waitForAll(
-        function()
-            if not noApply then
-                applyThrusts(status.thrusts)
-            end
-        end,
-        function() return sleep(0) end
-    )
+    parallel.waitForAll(function()
+        if not noApply then
+            applyThrusts(status.thrusts)
+        end
+        sleep(0)
+    end)
 end
 function Controller.prototype.loop(self)
     return function()

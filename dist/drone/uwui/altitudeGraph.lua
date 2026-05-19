@@ -1,7 +1,7 @@
 package.path = package.path .. ";../../?.lua"
 local ____lualib = require("lualib_bundle")
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 11,["6"] = 1,["7"] = 1,["8"] = 1,["9"] = 1,["10"] = 1,["11"] = 2,["12"] = 2,["13"] = 3,["14"] = 3,["15"] = 4,["16"] = 4,["17"] = 4,["18"] = 4,["19"] = 5,["20"] = 5,["21"] = 5,["22"] = 5,["23"] = 6,["24"] = 6,["25"] = 114,["26"] = 130,["27"] = 131,["28"] = 131,["29"] = 131,["30"] = 147,["31"] = 133,["32"] = 134,["33"] = 135,["34"] = 136,["35"] = 137,["36"] = 138,["37"] = 139,["38"] = 140,["39"] = 141,["40"] = 142,["41"] = 143,["42"] = 144,["43"] = 145,["44"] = 146,["45"] = 149,["46"] = 149,["47"] = 149,["48"] = 149,["49"] = 149,["50"] = 149,["51"] = 149,["52"] = 149,["53"] = 149,["54"] = 149,["55"] = 149,["56"] = 160,["57"] = 160,["58"] = 160,["59"] = 160,["60"] = 160,["61"] = 160,["62"] = 160,["63"] = 160,["64"] = 160,["65"] = 160,["66"] = 160,["68"] = 172,["69"] = 172,["70"] = 173,["71"] = 174,["72"] = 175,["73"] = 176,["74"] = 177,["75"] = 177,["76"] = 177,["77"] = 177,["78"] = 177,["79"] = 177,["80"] = 177,["81"] = 177,["82"] = 177,["83"] = 178,["84"] = 179,["85"] = 179,["86"] = 179,["87"] = 179,["88"] = 179,["89"] = 179,["90"] = 179,["91"] = 179,["92"] = 179,["93"] = 179,["94"] = 179,["96"] = 172,["99"] = 204,["100"] = 204,["101"] = 204,["102"] = 204,["103"] = 204,["104"] = 204,["105"] = 204,["106"] = 204,["107"] = 204,["108"] = 205,["110"] = 11,["111"] = 12,["112"] = 14,["113"] = 15,["114"] = 16,["115"] = 17,["116"] = 18,["117"] = 19,["118"] = 21,["119"] = 21,["120"] = 21,["121"] = 23,["122"] = 24,["123"] = 25,["125"] = 27,["126"] = 29,["127"] = 31,["128"] = 32,["129"] = 33,["130"] = 34,["131"] = 35,["133"] = 37,["134"] = 38,["135"] = 39,["137"] = 42,["138"] = 42,["139"] = 42,["140"] = 42,["141"] = 43,["142"] = 44,["143"] = 49,["144"] = 50,["145"] = 51,["146"] = 52,["147"] = 53,["148"] = 53,["149"] = 53,["150"] = 54,["151"] = 55,["152"] = 56,["153"] = 58,["154"] = 59,["155"] = 60,["156"] = 62,["157"] = 63,["159"] = 63,["160"] = 63,["161"] = 63,["164"] = 64,["166"] = 65,["167"] = 66,["168"] = 67,["169"] = 68,["170"] = 69,["171"] = 70,["172"] = 71,["173"] = 72,["174"] = 73,["175"] = 74,["176"] = 75,["177"] = 76,["178"] = 77,["179"] = 78,["183"] = 80,["184"] = 80,["185"] = 81,["186"] = 81,["187"] = 81,["188"] = 82,["189"] = 84,["190"] = 85,["191"] = 85,["192"] = 85,["193"] = 85,["194"] = 85,["195"] = 81,["196"] = 81,["199"] = 96,["200"] = 96,["201"] = 97,["202"] = 97,["203"] = 97,["204"] = 98,["205"] = 100,["206"] = 101,["207"] = 101,["208"] = 101,["209"] = 101,["210"] = 102,["211"] = 103,["212"] = 103,["213"] = 103,["214"] = 103,["215"] = 103,["216"] = 97,["217"] = 97,["220"] = 14});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 12,["6"] = 1,["7"] = 1,["8"] = 1,["9"] = 1,["10"] = 1,["11"] = 2,["12"] = 2,["13"] = 3,["14"] = 3,["15"] = 3,["16"] = 3,["17"] = 4,["18"] = 4,["19"] = 4,["20"] = 4,["21"] = 5,["22"] = 5,["23"] = 5,["24"] = 5,["25"] = 6,["26"] = 6,["27"] = 10,["28"] = 10,["29"] = 124,["30"] = 140,["31"] = 141,["32"] = 141,["33"] = 141,["34"] = 157,["35"] = 143,["36"] = 144,["37"] = 145,["38"] = 146,["39"] = 147,["40"] = 148,["41"] = 149,["42"] = 150,["43"] = 151,["44"] = 152,["45"] = 153,["46"] = 154,["47"] = 155,["48"] = 156,["49"] = 159,["50"] = 159,["51"] = 159,["52"] = 159,["53"] = 159,["54"] = 159,["55"] = 159,["56"] = 159,["57"] = 159,["58"] = 159,["59"] = 159,["60"] = 170,["61"] = 170,["62"] = 170,["63"] = 170,["64"] = 170,["65"] = 170,["66"] = 170,["67"] = 170,["68"] = 170,["69"] = 170,["70"] = 170,["72"] = 182,["73"] = 182,["74"] = 183,["75"] = 184,["76"] = 185,["77"] = 186,["78"] = 187,["79"] = 187,["80"] = 187,["81"] = 187,["82"] = 187,["83"] = 187,["84"] = 187,["85"] = 187,["86"] = 187,["87"] = 188,["88"] = 189,["89"] = 189,["90"] = 189,["91"] = 189,["92"] = 189,["93"] = 189,["94"] = 189,["95"] = 189,["96"] = 189,["97"] = 189,["98"] = 189,["100"] = 182,["103"] = 214,["104"] = 214,["105"] = 214,["106"] = 214,["107"] = 214,["108"] = 214,["109"] = 214,["110"] = 214,["111"] = 214,["112"] = 215,["114"] = 12,["115"] = 13,["116"] = 15,["117"] = 16,["118"] = 17,["119"] = 18,["120"] = 19,["121"] = 20,["122"] = 21,["123"] = 22,["124"] = 24,["125"] = 24,["126"] = 24,["127"] = 26,["128"] = 27,["129"] = 28,["131"] = 30,["132"] = 32,["133"] = 34,["134"] = 35,["135"] = 36,["136"] = 37,["137"] = 38,["139"] = 40,["140"] = 41,["141"] = 42,["143"] = 45,["144"] = 45,["145"] = 45,["146"] = 45,["147"] = 46,["148"] = 47,["149"] = 52,["150"] = 53,["151"] = 54,["152"] = 55,["153"] = 56,["154"] = 56,["155"] = 56,["156"] = 57,["157"] = 58,["158"] = 59,["159"] = 61,["160"] = 62,["161"] = 63,["162"] = 65,["163"] = 66,["164"] = 66,["166"] = 67,["168"] = 68,["169"] = 69,["170"] = 70,["171"] = 71,["172"] = 72,["173"] = 73,["174"] = 74,["175"] = 75,["176"] = 76,["177"] = 77,["178"] = 78,["179"] = 79,["180"] = 80,["181"] = 81,["185"] = 83,["186"] = 83,["188"] = 84,["189"] = 84,["190"] = 85,["191"] = 85,["192"] = 85,["193"] = 86,["194"] = 87,["195"] = 88,["196"] = 88,["197"] = 88,["198"] = 88,["199"] = 88,["200"] = 85,["201"] = 85,["205"] = 100,["206"] = 100,["208"] = 101,["209"] = 101,["210"] = 102,["211"] = 102,["212"] = 102,["213"] = 103,["214"] = 104,["215"] = 105,["216"] = 105,["217"] = 105,["218"] = 105,["219"] = 106,["220"] = 107,["221"] = 107,["222"] = 107,["223"] = 107,["224"] = 107,["225"] = 102,["226"] = 102,["230"] = 115,["232"] = 115,["233"] = 115,["234"] = 115,["235"] = 115,["239"] = 116,["240"] = 116,["241"] = 117,["245"] = 15});
 local ____exports = {}
 local AltitudeGrid, TITLE_FONT_SIZE, LABEL_FONT_SIZE
 local ____math = require("lib.math")
@@ -12,7 +12,9 @@ local niceStep = ____math.niceStep
 local ____hooks = require("lib.uwui-gpu.hooks")
 local each = ____hooks.each
 local ____components = require("lib.uwui-gpu.components")
+local If = ____components.If
 local Line = ____components.Line
+local Text = ____components.Text
 local ____hooks = require("lib.uwui-gpu.hooks")
 local useSignal = ____hooks.useSignal
 local useTick = ____hooks.useTick
@@ -23,6 +25,8 @@ local rgb = ____uwui.rgb
 local UwUi = ____uwui.UwUi
 local ____palette = require("drone.uwui.palette")
 local palette = ____palette.palette
+local ____signal = require("lib.uwui-gpu.signal")
+local resolve = ____signal.resolve
 function AltitudeGrid(props)
     local gpu = useGPU()
     local ____gpu_clip_1 = gpu.clip
@@ -71,7 +75,7 @@ function AltitudeGrid(props)
             local value = displayMin + index * gridStep
             local y = midY - (value - center) / displayRange * plotH
             local color = gridColor
-            if y >= padding.top and y <= h - padding.bottom + LABEL_FONT_SIZE / 2 then
+            if y >= padding.top and y <= h then
                 gpu:drawLine(
                     padding.left,
                     y,
@@ -85,7 +89,7 @@ function AltitudeGrid(props)
                 gpu:drawText(
                     label,
                     4,
-                    y - LABEL_FONT_SIZE / 2,
+                    clamp(y - LABEL_FONT_SIZE / 2, padding.top, h),
                     textColor.r,
                     textColor.g,
                     textColor.b,
@@ -114,8 +118,10 @@ function ____exports.AltitudeGraph(props)
     useTick()
     local gpu = useGPU()
     local state = useSignal({center = 0, displayRange = 10})
-    local sensorHistory = props.algo.sensorHistory.items
-    local targetHistory = props.algo.targetHistory.items
+    local algo = resolve(props.algo)
+    local sensorHistory = algo.sensorHistory.items
+    local targetHistory = algo.targetHistory.items
+    local lastSensor = algo.sensorHistory:youngest() or 0
     local ____gpu_clip_0 = gpu.clip
     local w = ____gpu_clip_0.w
     local h = ____gpu_clip_0.h
@@ -141,14 +147,14 @@ function ____exports.AltitudeGraph(props)
     )
     local displayRange = lerp(state.value.displayRange, targetRange, 0.1)
     state.value = {center = center, displayRange = displayRange}
-    local padding = {left = 46, right = 12, top = 22, bottom = 20}
+    local padding = {left = 46, right = 55, top = 25, bottom = 30}
     local plotW = math.max(1, w - padding.left - padding.right)
     local plotH = math.max(1, h - padding.top - padding.bottom)
     local midY = padding.top + plotH / 2
     local function valueToY(value)
         return midY - (value - center) / displayRange * plotH
     end
-    local gridStep = niceStep(displayRange / 4)
+    local gridStep = niceStep(displayRange / 8)
     local gridCount = math.floor(displayRange / gridStep)
     local displayMin = center - displayRange / 2
     local axisColor = rgb(145, 231, 255)
@@ -156,11 +162,7 @@ function ____exports.AltitudeGraph(props)
     local textColor = palette.text(0)
     return UwUi.node(
         Box,
-        {
-            bg = palette.bg(3),
-            border = rgb(35, 45, 65),
-            radius = 10
-        },
+        {x = 10, y = 10, w = -10, h = -10},
         UwUi.node(
             AltitudeGrid,
             {
@@ -176,46 +178,69 @@ function ____exports.AltitudeGraph(props)
                 axisColor = axisColor,
                 gridColor = gridColor,
                 textColor = textColor,
-                title = props.algo.name,
+                title = algo.name,
                 scaleLabel = "+/-" .. formatValue(displayRange / 2)
             }
         ),
         UwUi.node(
-            Line,
-            {smoothing = 0.8},
-            table.unpack(each(
-                targetHistory,
-                function(target, idx)
-                    local xStep = #targetHistory > 1 and plotW / (#targetHistory - 1) or plotW
-                    local mode = props.algo.modeHistory:get(idx)
-                    return {
-                        x = padding.left + idx * xStep,
-                        y = valueToY(target),
-                        color = rgb(mode == "attack" and 200 or 105, mode == "attack" and 180 or 180, mode == "attack" and 180 or 210)
-                    }
-                end
-            ))
+            If,
+            {condition = #targetHistory > 10},
+            UwUi.node(
+                Line,
+                {smoothing = 0.8},
+                table.unpack(each(
+                    targetHistory,
+                    function(target, idx)
+                        local xStep = plotW / #targetHistory
+                        local mode = algo.modeHistory:get(idx)
+                        return {
+                            x = padding.left + idx * xStep,
+                            y = valueToY(target),
+                            color = rgb(mode == "attack" and 200 or 105, mode == "attack" and 180 or 180, mode == "attack" and 180 or 210)
+                        }
+                    end
+                ))
+            )
         ),
         UwUi.node(
-            Line,
-            {smoothing = 0.8},
-            table.unpack(each(
-                sensorHistory,
-                function(value, idx)
-                    local xStep = #sensorHistory > 1 and plotW / (#sensorHistory - 1) or plotW
-                    local normalized = clamp((value - center) / (displayRange / 2), -1, 1)
-                    local intensity = math.max(
-                        0,
-                        1 - math.abs(normalized)
-                    )
-                    local mode = props.algo.modeHistory:get(idx)
-                    return {
-                        x = padding.left + idx * xStep,
-                        y = valueToY(value),
-                        color = rgb(240 - 145 * intensity, 80, mode == "attack" and 200 or 255)
-                    }
-                end
-            ))
+            If,
+            {condition = #sensorHistory > 10},
+            UwUi.node(
+                Line,
+                {smoothing = 0.8},
+                table.unpack(each(
+                    sensorHistory,
+                    function(value, idx)
+                        local xStep = plotW / #sensorHistory
+                        local normalized = clamp((value - center) / (displayRange / 2), -1, 1)
+                        local intensity = math.max(
+                            0,
+                            1 - math.abs(normalized)
+                        )
+                        local mode = algo.modeHistory:get(idx)
+                        return {
+                            x = padding.left + idx * xStep,
+                            y = valueToY(value),
+                            color = rgb(240 - 145 * intensity, 80, mode == "attack" and 200 or 255)
+                        }
+                    end
+                ))
+            )
+        ),
+        UwUi.node(
+            Box,
+            {
+                x = -25,
+                y = valueToY(lastSensor),
+                w = 25,
+                h = 15,
+                align = "middle"
+            },
+            UwUi.node(
+                Text,
+                {x = 0, y = 0.5, align = "middle"},
+                formatValue(lastSensor)
+            )
         )
     )
 end

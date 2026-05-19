@@ -11,8 +11,8 @@ local Text = ____uwui.Text
 local useGPU = ____uwui.useGPU
 local useSignal = ____uwui.useSignal
 local UwUi = ____uwui.UwUi
-local ____graphs = require("drone.uwui.graphs")
-local Graphs = ____graphs.Graphs
+local ____altitudeGraph = require("drone.uwui.altitudeGraph")
+local AltitudeGraph = ____altitudeGraph.AltitudeGraph
 local ____palette = require("drone.uwui.palette")
 local palette = ____palette.palette
 function ____exports.Status(props)
@@ -51,7 +51,7 @@ function ____exports.Status(props)
                         y = y,
                         w = -10,
                         h = 30,
-                        bg = palette.bg(algo.disabled.value and 3 or 4),
+                        bg = palette.bg(algo.disabled.value and 3 or (algo == props.algo.value and 5 or 4)),
                         onInput = function(____, ____bindingPattern0)
                             local button
                             local ____type
@@ -133,7 +133,7 @@ function ____exports.Dashboard(props)
                 radius = 20,
                 border = palette.bg(5)
             },
-            UwUi.node(Graphs, {algo = algo})
+            UwUi.node(AltitudeGraph, {algo = algo.value})
         )
     )
 end

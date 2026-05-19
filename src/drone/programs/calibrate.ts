@@ -4,9 +4,9 @@ import { state as sensors, stopRotors } from "../peripherals";
 import { centerValues, clamp } from "../../lib/util";
 import { anyKey, showHeader } from "../../lib/chalk";
 
-const TRIM_STEP = 0.0001;
-const MAX_TRIM = 0.2;
-const ANGLE_THRESHOLD = 1;
+const TRIM_STEP = 0.00005;
+const MAX_TRIM = 0.3;
+const ANGLE_THRESHOLD = 1.5;
 const SETTLE_TIME = 1;
 const TARGET_HEIGHT = 3;
 
@@ -18,6 +18,7 @@ controller.inputs = {
 	alt: controller.inputs.alt,
 	velF: 0,
 	velR: 0,
+	velU: 0,
 	pitch: 0,
 	roll: 0,
 };
@@ -50,6 +51,7 @@ function calibrationLoop(): void {
 	anyKey();
 
 	const settledPitch = sensors.pitch;
+	const settledRoll = sensors.roll;
 	const originAlt = sensors.alt;
 	const startTime = os.clock();
 
@@ -71,6 +73,7 @@ function calibrationLoop(): void {
 		controller.tick();
 
 		const pitchError = sensors.pitch - settledPitch;
+		const rollError = sensors.roll - settledRoll;
 
 		showHeader("Calibrating Trims...");
 		print("");
@@ -88,6 +91,8 @@ function calibrationLoop(): void {
 		term.setTextColor(colors.purple);
 		print(string.format("Base Hover: %.3f", base));
 		print(string.format("Deviation: %.3f", trimDelta));
+		print(string.format("Pitch Error: %.3f", pitchError));
+		print(string.format("Roll Error: %.3f", rollError));
 		print("");
 		term.setTextColor(colors.pink);
 		textutils.tabulate(
@@ -100,21 +105,43 @@ function calibrationLoop(): void {
 		print("Press Q to cancel");
 		term.setTextColor(colors.white);
 
-		if (pitchError > ANGLE_THRESHOLD) {
-			trims.fl -= TRIM_STEP * 10;
-			trims.fr -= TRIM_STEP * 10;
-			trims.bl -= TRIM_STEP;
-			trims.br -= TRIM_STEP;
-			settleTime = 0;
-		} else if (pitchError < -ANGLE_THRESHOLD) {
-			trims.fl -= TRIM_STEP;
-			trims.fr -= TRIM_STEP;
-			trims.bl -= TRIM_STEP * 10;
-			trims.br -= TRIM_STEP * 10;
+		const pitchFront =
+			pitchError > ANGLE_THRESHOLD
+				? -TRIM_STEP * 10
+				: pitchError < -ANGLE_THRESHOLD
+					? -TRIM_STEP
+					: 0;
+		const pitchBack =
+			pitchError > ANGLE_THRESHOLD
+				? -TRIM_STEP
+				: pitchError < -ANGLE_THRESHOLD
+					? -TRIM_STEP * 10
+					: 0;
+		const rollLeft =
+			rollError > ANGLE_THRESHOLD
+				? -TRIM_STEP * 10
+				: rollError < -ANGLE_THRESHOLD
+					? -TRIM_STEP
+					: 0;
+		const rollRight =
+			rollError > ANGLE_THRESHOLD
+				? -TRIM_STEP
+				: rollError < -ANGLE_THRESHOLD
+					? -TRIM_STEP * 10
+					: 0;
+
+		if (pitchFront !== 0 || pitchBack !== 0 || rollLeft !== 0 || rollRight !== 0) {
+			trims.fl += pitchFront + rollLeft;
+			trims.fr += pitchFront + rollRight;
+			trims.bl += pitchBack + rollLeft;
+			trims.br += pitchBack + rollRight;
 			settleTime = 0;
 		} else {
-			//base = math.min(base + TRIM_STEP * 0.5, hoverBase * 1.5);
 			settleTime += controller.status.value.dt;
+		}
+
+		for (const key of ["fl", "fr", "bl", "br"] as const) {
+			trims[key] = clamp(trims[key], -MAX_TRIM, MAX_TRIM);
 		}
 
 		if (sensors.alt - originAlt > 0.5) {

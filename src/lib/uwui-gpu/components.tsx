@@ -135,3 +135,11 @@ export function Model(props: ModelProps) {
 		255, //MODEL_B,
 	);
 }
+
+export function If(props?: any, ...children: any[]) {
+	if (props?.condition || props === true) {
+		return children;
+	} else {
+		return [];
+	}
+}

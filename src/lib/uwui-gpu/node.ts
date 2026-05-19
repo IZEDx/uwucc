@@ -30,8 +30,8 @@ export class Node<P extends UwUi.Props = any, C extends UwUi.Children = any> {
 	dirty = true;
 	gpu?: GPUView;
 	opaque = false;
-	forceRender = false;
 
+	private _forceRender = false;
 	private disposers = [] as Unsub[];
 
 	constructor(
@@ -43,6 +43,17 @@ export class Node<P extends UwUi.Props = any, C extends UwUi.Children = any> {
 		this.inputChildren = children;
 		this.children = flatten(children);
 		for (const child of this.children) child.parent = this;
+	}
+
+	get forceRender() {
+		return this._forceRender;
+	}
+
+	set forceRender(v: boolean) {
+		if (v && this.parent && !this.opaque) {
+			this.parent.forceRender = true;
+		}
+		this._forceRender = v;
 	}
 
 	keyOf(): string | number | undefined {

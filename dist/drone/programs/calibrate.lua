@@ -3,7 +3,7 @@ local ____lualib = require("lualib_bundle")
 local __TS__New = ____lualib.__TS__New
 local __TS__ObjectValues = ____lualib.__TS__ObjectValues
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["7"] = 1,["8"] = 1,["9"] = 2,["10"] = 2,["11"] = 3,["12"] = 3,["13"] = 3,["14"] = 4,["15"] = 4,["16"] = 4,["17"] = 5,["18"] = 5,["19"] = 5,["20"] = 7,["21"] = 8,["22"] = 9,["23"] = 10,["24"] = 11,["25"] = 13,["26"] = 17,["27"] = 17,["28"] = 17,["29"] = 17,["30"] = 17,["31"] = 17,["32"] = 17,["33"] = 25,["34"] = 26,["35"] = 27,["36"] = 28,["37"] = 29,["38"] = 30,["39"] = 31,["40"] = 32,["41"] = 40,["42"] = 41,["43"] = 42,["45"] = 45,["46"] = 46,["47"] = 47,["48"] = 48,["49"] = 49,["50"] = 50,["51"] = 52,["52"] = 53,["53"] = 54,["54"] = 56,["55"] = 57,["56"] = 57,["57"] = 57,["58"] = 57,["59"] = 58,["60"] = 58,["61"] = 58,["62"] = 58,["63"] = 59,["64"] = 60,["65"] = 61,["66"] = 63,["67"] = 64,["68"] = 71,["69"] = 73,["70"] = 75,["71"] = 76,["72"] = 77,["73"] = 78,["74"] = 78,["75"] = 78,["76"] = 78,["77"] = 79,["78"] = 80,["79"] = 81,["80"] = 82,["81"] = 82,["82"] = 81,["83"] = 87,["84"] = 88,["85"] = 89,["86"] = 90,["87"] = 91,["88"] = 92,["89"] = 93,["90"] = 93,["91"] = 95,["92"] = 95,["93"] = 95,["94"] = 95,["95"] = 93,["96"] = 96,["97"] = 96,["98"] = 96,["99"] = 96,["100"] = 93,["101"] = 93,["102"] = 98,["103"] = 99,["104"] = 100,["105"] = 101,["106"] = 103,["107"] = 104,["108"] = 105,["109"] = 106,["110"] = 107,["111"] = 108,["112"] = 109,["113"] = 110,["114"] = 111,["115"] = 112,["116"] = 113,["117"] = 114,["119"] = 117,["121"] = 120,["122"] = 121,["123"] = 122,["124"] = 123,["125"] = 124,["127"] = 127,["128"] = 128,["129"] = 129,["130"] = 130,["131"] = 131,["132"] = 132,["133"] = 133,["138"] = 139,["139"] = 141,["140"] = 142,["141"] = 144,["142"] = 145,["143"] = 146,["144"] = 147,["145"] = 148,["146"] = 148,["147"] = 150,["148"] = 150,["149"] = 150,["150"] = 150,["151"] = 148,["152"] = 151,["153"] = 151,["154"] = 151,["155"] = 151,["156"] = 148,["157"] = 148,["158"] = 154,["159"] = 155,["160"] = 156,["161"] = 158,["162"] = 159,["163"] = 160,["165"] = 25,["166"] = 164,["167"] = 164,["168"] = 164,["169"] = 164});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["7"] = 1,["8"] = 1,["9"] = 2,["10"] = 2,["11"] = 3,["12"] = 3,["13"] = 3,["14"] = 4,["15"] = 4,["16"] = 4,["17"] = 5,["18"] = 5,["19"] = 5,["20"] = 7,["21"] = 8,["22"] = 9,["23"] = 10,["24"] = 11,["25"] = 13,["26"] = 17,["27"] = 17,["28"] = 17,["29"] = 17,["30"] = 17,["31"] = 17,["32"] = 17,["33"] = 17,["34"] = 26,["35"] = 27,["36"] = 28,["37"] = 29,["38"] = 30,["39"] = 31,["40"] = 32,["41"] = 33,["42"] = 41,["43"] = 42,["44"] = 43,["46"] = 46,["47"] = 47,["48"] = 48,["49"] = 49,["50"] = 50,["51"] = 51,["52"] = 53,["53"] = 54,["54"] = 55,["55"] = 56,["56"] = 58,["57"] = 59,["58"] = 59,["59"] = 59,["60"] = 59,["61"] = 60,["62"] = 60,["63"] = 60,["64"] = 60,["65"] = 61,["66"] = 62,["67"] = 63,["68"] = 65,["69"] = 66,["70"] = 73,["71"] = 75,["72"] = 76,["73"] = 78,["74"] = 79,["75"] = 80,["76"] = 81,["77"] = 81,["78"] = 81,["79"] = 81,["80"] = 82,["81"] = 83,["82"] = 84,["83"] = 85,["84"] = 85,["85"] = 84,["86"] = 90,["87"] = 91,["88"] = 92,["89"] = 93,["90"] = 94,["91"] = 95,["92"] = 96,["93"] = 97,["94"] = 98,["95"] = 98,["96"] = 100,["97"] = 100,["98"] = 100,["99"] = 100,["100"] = 98,["101"] = 101,["102"] = 101,["103"] = 101,["104"] = 101,["105"] = 98,["106"] = 98,["107"] = 103,["108"] = 104,["109"] = 105,["110"] = 106,["111"] = 108,["112"] = 114,["113"] = 120,["114"] = 126,["115"] = 133,["116"] = 134,["117"] = 135,["118"] = 136,["119"] = 137,["120"] = 138,["122"] = 140,["124"] = 143,["125"] = 144,["127"] = 147,["128"] = 148,["129"] = 149,["130"] = 150,["131"] = 151,["133"] = 154,["134"] = 155,["135"] = 156,["136"] = 157,["137"] = 158,["138"] = 159,["139"] = 160,["144"] = 166,["145"] = 168,["146"] = 169,["147"] = 171,["148"] = 172,["149"] = 173,["150"] = 174,["151"] = 175,["152"] = 175,["153"] = 177,["154"] = 177,["155"] = 177,["156"] = 177,["157"] = 175,["158"] = 178,["159"] = 178,["160"] = 178,["161"] = 178,["162"] = 175,["163"] = 175,["164"] = 181,["165"] = 182,["166"] = 183,["167"] = 185,["168"] = 186,["169"] = 187,["171"] = 26,["172"] = 191,["173"] = 191,["174"] = 191,["175"] = 191});
 local ____exports = {}
 local ____program = require("lib.program")
 local program = ____program.program
@@ -18,9 +18,9 @@ local clamp = ____util.clamp
 local ____chalk = require("lib.chalk")
 local anyKey = ____chalk.anyKey
 local showHeader = ____chalk.showHeader
-local TRIM_STEP = 0.0001
-local MAX_TRIM = 0.2
-local ANGLE_THRESHOLD = 1
+local TRIM_STEP = 0.00005
+local MAX_TRIM = 0.3
+local ANGLE_THRESHOLD = 1.5
 local SETTLE_TIME = 1
 local TARGET_HEIGHT = 3
 local controller = __TS__New(Controller, {load = false, tick = false})
@@ -28,6 +28,7 @@ controller.inputs = {
     alt = controller.inputs.alt,
     velF = 0,
     velR = 0,
+    velU = 0,
     pitch = 0,
     roll = 0
 }
@@ -50,6 +51,7 @@ local function calibrationLoop()
     print("")
     anyKey()
     local settledPitch = sensors.pitch
+    local settledRoll = sensors.roll
     local originAlt = sensors.alt
     local startTime = os.clock()
     while true do
@@ -68,6 +70,7 @@ local function calibrationLoop()
         cfg.trims = {fl = trims.fl * (settled / 100), fr = trims.fr * (settled / 100), bl = trims.bl * (settled / 100), br = trims.br * (settled / 100)}
         controller:tick()
         local pitchError = sensors.pitch - settledPitch
+        local rollError = sensors.roll - settledRoll
         showHeader("Calibrating Trims...")
         print("")
         term.setTextColor(colors.lightBlue)
@@ -85,6 +88,8 @@ local function calibrationLoop()
         term.setTextColor(colors.purple)
         print(string.format("Base Hover: %.3f", base))
         print(string.format("Deviation: %.3f", trimDelta))
+        print(string.format("Pitch Error: %.3f", pitchError))
+        print(string.format("Roll Error: %.3f", rollError))
         print("")
         term.setTextColor(colors.pink)
         textutils.tabulate(
@@ -104,20 +109,21 @@ local function calibrationLoop()
         term.setTextColor(colors.lightGray)
         print("Press Q to cancel")
         term.setTextColor(colors.white)
-        if pitchError > ANGLE_THRESHOLD then
-            trims.fl = trims.fl - TRIM_STEP * 10
-            trims.fr = trims.fr - TRIM_STEP * 10
-            trims.bl = trims.bl - TRIM_STEP
-            trims.br = trims.br - TRIM_STEP
-            settleTime = 0
-        elseif pitchError < -ANGLE_THRESHOLD then
-            trims.fl = trims.fl - TRIM_STEP
-            trims.fr = trims.fr - TRIM_STEP
-            trims.bl = trims.bl - TRIM_STEP * 10
-            trims.br = trims.br - TRIM_STEP * 10
+        local pitchFront = pitchError > ANGLE_THRESHOLD and -TRIM_STEP * 10 or (pitchError < -ANGLE_THRESHOLD and -TRIM_STEP or 0)
+        local pitchBack = pitchError > ANGLE_THRESHOLD and -TRIM_STEP or (pitchError < -ANGLE_THRESHOLD and -TRIM_STEP * 10 or 0)
+        local rollLeft = rollError > ANGLE_THRESHOLD and -TRIM_STEP * 10 or (rollError < -ANGLE_THRESHOLD and -TRIM_STEP or 0)
+        local rollRight = rollError > ANGLE_THRESHOLD and -TRIM_STEP or (rollError < -ANGLE_THRESHOLD and -TRIM_STEP * 10 or 0)
+        if pitchFront ~= 0 or pitchBack ~= 0 or rollLeft ~= 0 or rollRight ~= 0 then
+            trims.fl = trims.fl + (pitchFront + rollLeft)
+            trims.fr = trims.fr + (pitchFront + rollRight)
+            trims.bl = trims.bl + (pitchBack + rollLeft)
+            trims.br = trims.br + (pitchBack + rollRight)
             settleTime = 0
         else
             settleTime = settleTime + controller.status.value.dt
+        end
+        for ____, key in ipairs({"fl", "fr", "bl", "br"}) do
+            trims[key] = clamp(trims[key], -MAX_TRIM, MAX_TRIM)
         end
         if sensors.alt - originAlt > 0.5 then
             trims.fl = trims.fl - TRIM_STEP * 2

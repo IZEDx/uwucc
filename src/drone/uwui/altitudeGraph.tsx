@@ -1,22 +1,25 @@
 import { clamp, formatValue, lerp, niceStep } from "../../lib/math";
 import { each } from "../../lib/uwui-gpu/hooks";
-import { Line } from "../../lib/uwui-gpu/components";
+import { If, Line, Text } from "../../lib/uwui-gpu/components";
 import { useSignal, useTick, useGPU } from "../../lib/uwui-gpu/hooks";
-import { Box, rgb, UwUi } from "../../lib/uwui-gpu/uwui";
+import { Box, rgb, Signal, UwUi } from "../../lib/uwui-gpu/uwui";
 import { palette } from "./palette";
 import { RGB } from "../../lib/uwui-gpu/colors";
 import { Algorithm } from "../../lib/algorithm/abstract";
 import { LAC } from "../../lib/algorithm/lac";
+import { resolve } from "../../lib/uwui-gpu/signal";
 
 const TITLE_FONT_SIZE = 12;
 const LABEL_FONT_SIZE = 10;
 
-export function AltitudeGraph(props: { algo: LAC }) {
+export function AltitudeGraph(props: { algo: Signal.Maybe<LAC> }) {
 	useTick();
 	const gpu = useGPU();
 	const state = useSignal({ center: 0, displayRange: 10 });
-	const sensorHistory = props.algo.sensorHistory.items;
-	const targetHistory = props.algo.targetHistory.items;
+	const algo = resolve(props.algo);
+	const sensorHistory = algo.sensorHistory.items;
+	const targetHistory = algo.targetHistory.items;
+	const lastSensor = algo.sensorHistory.youngest() ?? 0;
 
 	const { w, h } = gpu.clip;
 
@@ -46,12 +49,12 @@ export function AltitudeGraph(props: { algo: LAC }) {
 		displayRange,
 	};
 
-	const padding = { left: 46, right: 12, top: 22, bottom: 20 };
+	const padding = { left: 46, right: 55, top: 25, bottom: 30 };
 	const plotW = math.max(1, w - padding.left - padding.right);
 	const plotH = math.max(1, h - padding.top - padding.bottom);
 	const midY = padding.top + plotH / 2;
 	const valueToY = (value: number) => midY - ((value - center) / displayRange) * plotH;
-	const gridStep = niceStep(displayRange / 4);
+	const gridStep = niceStep(displayRange / 8);
 	const gridCount = math.floor(displayRange / gridStep);
 	const displayMin = center - displayRange / 2;
 
@@ -60,7 +63,7 @@ export function AltitudeGraph(props: { algo: LAC }) {
 	const textColor = palette.text(0);
 
 	return (
-		<Box bg={palette.bg(3)} border={rgb(35, 45, 65)} radius={10}>
+		<Box x={10} y={10} w={-10} h={-10}>
 			<AltitudeGrid
 				padding={padding}
 				plotW={plotW}
@@ -74,39 +77,46 @@ export function AltitudeGraph(props: { algo: LAC }) {
 				axisColor={axisColor}
 				gridColor={gridColor}
 				textColor={textColor}
-				title={props.algo.name}
+				title={algo.name}
 				scaleLabel={`+/-${formatValue(displayRange / 2)}`}
 			/>
-			<Line smoothing={0.8}>
-				{...each(targetHistory, (target, idx) => {
-					const xStep =
-						targetHistory.length > 1 ? plotW / (targetHistory.length - 1) : plotW;
-					const mode = props.algo.modeHistory.get(idx);
-					return {
-						x: padding.left + idx * xStep,
-						y: valueToY(target),
-						color: rgb(
-							mode === "attack" ? 200 : 105,
-							mode === "attack" ? 180 : 180,
-							mode === "attack" ? 180 : 210,
-						),
-					};
-				})}
-			</Line>
-			<Line smoothing={0.8}>
-				{...each(sensorHistory, (value, idx) => {
-					const xStep =
-						sensorHistory.length > 1 ? plotW / (sensorHistory.length - 1) : plotW;
-					const normalized = clamp((value - center) / (displayRange / 2), -1, 1);
-					const intensity = math.max(0, 1 - math.abs(normalized));
-					const mode = props.algo.modeHistory.get(idx);
-					return {
-						x: padding.left + idx * xStep,
-						y: valueToY(value),
-						color: rgb(240 - 145 * intensity, 80, mode === "attack" ? 200 : 255),
-					};
-				})}
-			</Line>
+			<If condition={targetHistory.length > 10}>
+				<Line smoothing={0.8}>
+					{...each(targetHistory, (target, idx) => {
+						const xStep = plotW / targetHistory.length;
+						const mode = algo.modeHistory.get(idx);
+						return {
+							x: padding.left + idx * xStep,
+							y: valueToY(target),
+							color: rgb(
+								mode === "attack" ? 200 : 105,
+								mode === "attack" ? 180 : 180,
+								mode === "attack" ? 180 : 210,
+							),
+						};
+					})}
+				</Line>
+			</If>
+			<If condition={sensorHistory.length > 10}>
+				<Line smoothing={0.8}>
+					{...each(sensorHistory, (value, idx) => {
+						const xStep = plotW / sensorHistory.length;
+						const normalized = clamp((value - center) / (displayRange / 2), -1, 1);
+						const intensity = math.max(0, 1 - math.abs(normalized));
+						const mode = algo.modeHistory.get(idx);
+						return {
+							x: padding.left + idx * xStep,
+							y: valueToY(value),
+							color: rgb(240 - 145 * intensity, 80, mode === "attack" ? 200 : 255),
+						};
+					})}
+				</Line>
+			</If>
+			<Box x={-25} y={valueToY(lastSensor)} w={25} h={15} align="middle">
+				<Text x={0} y={0.5} align="middle">
+					{formatValue(lastSensor)}
+				</Text>
+			</Box>
 		</Box>
 	);
 }
@@ -173,13 +183,13 @@ function AltitudeGrid(props: {
 		const value = displayMin + index * gridStep;
 		const y = midY - ((value - center) / displayRange) * plotH;
 		const color = gridColor; //index === gridCount / 2 ? axisColor : gridColor;
-		if (y >= padding.top && y <= h - padding.bottom + LABEL_FONT_SIZE / 2) {
+		if (y >= padding.top && y <= h) {
 			gpu.drawLine(padding.left, y, padding.left + plotW, y, color.r, color.g, color.b);
 			const label = formatValue(value);
 			gpu.drawText(
 				label,
 				4,
-				y - LABEL_FONT_SIZE / 2,
+				clamp(y - LABEL_FONT_SIZE / 2, padding.top, h),
 				textColor.r,
 				textColor.g,
 				textColor.b,

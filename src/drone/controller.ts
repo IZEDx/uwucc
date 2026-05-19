@@ -8,7 +8,7 @@ import { LAC } from "../lib/algorithm/lac";
 import { signal } from "../lib/uwui-gpu/signal";
 import { lerp } from "../lib/math";
 
-export const parts = ["alt", "velF", "velR", "pitch", "roll"] as const;
+export const parts = ["alt", "velF", "velU", "velR", "pitch", "roll"] as const;
 
 const defaultConfig = () =>
 	new Config("config", {
@@ -69,6 +69,7 @@ export class Controller {
 		this.inputs = {
 			alt: sensors.alt,
 			velF: 0,
+			velU: 0,
 			velR: 0,
 			pitch: 0,
 			roll: 0,
@@ -76,6 +77,7 @@ export class Controller {
 
 		this.algos = {
 			alt: new LAC("alt", this.tunings),
+			velU: new LAC("velU", this.tunings),
 			velF: new LAC("velF", this.tunings),
 			velR: new LAC("velR", this.tunings),
 			pitch: new LAC("pitch", this.tunings),
@@ -118,63 +120,58 @@ export class Controller {
 		const targets = this.inputs;
 
 		status.tickCount++;
+
 		const now = os.clock();
 		status.dt = math.max(0.05, now - status.lastTick);
 		status.lastTick = now;
 		status.upTime += status.dt;
 
-		// Maintain rolling average of delta times
-		if (this._lastDts.length >= 4) {
-			this._lastDts.shift();
-		}
+		if (this._lastDts.length >= 4) this._lastDts.shift();
 		this._lastDts.push(status.dt);
 
-		let dtSum = 0;
-		for (const dt of this._lastDts) {
-			dtSum += dt;
-		}
-		status.avgDt = dtSum / 4; //this._lastDts.length;
+		status.avgDt = this._lastDts.reduce((a, b) => a + b, 0) / this._lastDts.length;
 
-		// Altitude control
-		let altCmd = this.algos.alt.compute(sensors.alt, targets.alt, status.avgDt);
-		//altCmd = altCmd > 0 ? altCmd / sensors.airP : altCmd * sensors.airP;
+		// ALTITUDE -> vertical velocity target
+		const velUTarget = this.algos.alt.compute(sensors.alt, targets.alt, status.avgDt);
 
-		status.base = clamp(
-			(cfg.base.hover + altCmd) * (1 - sensors.airP / 2),
-			cfg.base.min,
-			cfg.base.max,
+		// vertical velocity -> thrust
+		const prevVelU = this.algos.velU.sensorHistory.youngest() || 0;
+
+		const velUCmd = this.algos.velU.compute(
+			lerp(prevVelU, sensors.velU, 0.2),
+			velUTarget,
+			status.avgDt,
 		);
 
-		// Velocity to pitch/roll control
+		status.base = clamp(cfg.base.hover + velUCmd, cfg.base.min, cfg.base.max);
+
+		// horizontal velocity -> attitude
 		const prevVelF = this.algos.velF.sensorHistory.youngest() || 0;
 		const velFCmd = this.algos.velF.compute(
 			lerp(prevVelF, sensors.velF, 0.2),
 			targets.velF,
-			status.dt,
+			status.avgDt,
 		);
-		const maxPitch = this.cfg.data.controller.max_pitch;
+
+		const maxPitch = cfg.controller.max_pitch;
 		const pitchTarget = clamp(targets.pitch - velFCmd * maxPitch, -maxPitch, maxPitch);
-		const pitchCmd = this.algos.pitch.compute(sensors.pitch, pitchTarget, status.dt);
+		const pitchCmd = this.algos.pitch.compute(sensors.pitch, pitchTarget, status.avgDt);
 
-		const velRCmd = this.algos.velR.compute(sensors.velR, targets.velR, status.dt);
-		const maxRoll = this.cfg.data.controller.max_roll;
+		const velRCmd = this.algos.velR.compute(sensors.velR, targets.velR, status.avgDt);
+
+		const maxRoll = cfg.controller.max_roll;
 		const rollTarget = clamp(targets.roll + velRCmd * maxRoll, -maxRoll, maxRoll);
-		const rollCmd = this.algos.roll.compute(sensors.roll, rollTarget, status.dt);
+		const rollCmd = this.algos.roll.compute(sensors.roll, rollTarget, status.avgDt);
 
-		// Compute rotor thrusts using X-frame mixer
 		status.thrusts = computeRotorThrusts(status.base, pitchCmd, rollCmd, cfg.trims);
 		normalizeThrusts(status.thrusts);
 
 		this.status.value = status;
 
-		parallel.waitForAll(
-			() => {
-				if (!noApply) {
-					applyThrusts(status.thrusts);
-				}
-			},
-			() => sleep(0),
-		);
+		parallel.waitForAll(() => {
+			if (!noApply) applyThrusts(status.thrusts);
+			sleep(0);
+		});
 	}
 
 	loop() {

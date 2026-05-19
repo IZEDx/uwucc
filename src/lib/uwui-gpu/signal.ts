@@ -75,6 +75,11 @@ export function signal<T>(value: T): Signal<T> {
 	return new Signal(value);
 }
 
+export function resolve<T>(value: Signal.Maybe<T> | MaybeGetter<T>): T {
+	if (value && value instanceof Signal) return value.value as T;
+	return extract(value) as T;
+}
+
 export function extract<T>(value: MaybeGetter<T>): T {
 	return typeof value === "function" ? (value as Getter<T>)() : value;
 }

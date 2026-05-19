@@ -51,6 +51,12 @@ export const cfg = new Config("connectors", {
 		bl: "electric_motor_2",
 		br: "electric_motor_3",
 	},
+	propellers: {
+		fl: "gyroscopic_propeller_bearing_0",
+		fr: "gyroscopic_propeller_bearing_1",
+		bl: "gyroscopic_propeller_bearing_2",
+		br: "gyroscopic_propeller_bearing_3",
+	},
 	monitors: {
 		status: "monitor_0",
 	},
@@ -84,6 +90,12 @@ export const peripherals = {
 		bl: peripheral.wrap(cfg.data.rotors.bl) as ElectricMotorPeripheral,
 		br: peripheral.wrap(cfg.data.rotors.br) as ElectricMotorPeripheral,
 	},
+	propellers: {
+		fl: peripheral.wrap(cfg.data.propellers.fl) as GyroscopicPropellerPeripheral,
+		fr: peripheral.wrap(cfg.data.propellers.fr) as GyroscopicPropellerPeripheral,
+		bl: peripheral.wrap(cfg.data.propellers.bl) as GyroscopicPropellerPeripheral,
+		br: peripheral.wrap(cfg.data.propellers.br) as GyroscopicPropellerPeripheral,
+	},
 
 	monitors: {
 		status: peripheral.wrap(cfg.data.monitors.status) as MonitorPeripheral,
@@ -100,6 +112,7 @@ export const peripherals = {
 export const state = {
 	alt: 0,
 	airP: 0,
+	velU: 0,
 	velF: 0,
 	velR: 0,
 	pitch: 0,
@@ -118,6 +131,7 @@ export function pullState() {
 
 	const vel = sublevel.getLinearVelocity();
 	state.velF = vel.x;
+	state.velU = vel.y;
 	state.velR = vel.z;
 
 	const [pitch, yaw, roll] = pose.orientation.toEuler();
@@ -175,6 +189,7 @@ export function peripheralsSetup() {
 
 try {
 	pullState();
+	stopRotors();
 } catch (e) {
 	printError(e);
 	peripheralsSetup();
@@ -216,4 +231,17 @@ export function applyThrusts(thrusts: Thrusts): void {
 			}
 		}),
 	);
+}
+
+stopRotors();
+
+const angle = 2;
+for (const k of Object.keys(peripherals.propellers)) {
+	const key = k as keyof typeof peripherals.propellers;
+	const p = peripherals.propellers[key];
+	let [x, y, z] = p.getBlockNormal();
+	z += key.endsWith("l") ? angle : -angle;
+	//x += key.startsWith("b") ? angle : -angle;
+	p.setManualTarget([x, y, z]);
+	print("lock propeller", p);
 }

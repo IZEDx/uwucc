@@ -11,15 +11,3 @@ import { LAC } from "../../lib/algorithm/lac";
 
 const TITLE_FONT_SIZE = 12;
 const LABEL_FONT_SIZE = 10;
-
-export function Graphs(props: { algo: Signal<LAC> }) {
-	return (
-		<Box bg={palette.bg(3)} x={10} y={10} w={-20} h={-10}>
-			<AltitudeGraph algo={props.algo.value} />
-			{/*
-			<AttitudeGraph algo={props.controller.algos.pitch} />
-			<AttitudeGraph algo={props.controller.algos.roll} />
-			*/}
-		</Box>
-	);
-}

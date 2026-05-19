@@ -3,6 +3,7 @@
 /// <reference types="./ccsable.d.ts" />
 /// <reference types="./crafts_additions.d.ts" />
 /// <reference types="./directgpu.d.ts" />
+/// <reference types="./avionics.d.ts" />
 
 declare type Widen<T> = T extends string
 	? string

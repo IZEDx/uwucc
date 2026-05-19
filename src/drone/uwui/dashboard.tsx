@@ -3,7 +3,7 @@ import { Model, Scene } from "../../lib/uwui-gpu/components";
 import { Box, each, Signal, Text, useGPU, useSignal, UwUi } from "../../lib/uwui-gpu/uwui";
 import { Controller } from "../controller";
 import { state } from "../peripherals";
-import { Graphs } from "./graphs";
+import { AltitudeGraph } from "./altitudeGraph";
 import { palette } from "./palette";
 
 export function Dashboard(props: { controller: Controller }) {
@@ -32,7 +32,7 @@ export function Dashboard(props: { controller: Controller }) {
 				radius={20}
 				border={palette.bg(5)}
 			>
-				<Graphs algo={algo} />
+				<AltitudeGraph algo={algo.value} />
 			</Box>
 			{/*
 			<Scene>
@@ -71,7 +71,7 @@ export function Status(props: { controller: Controller; algo: Signal<LAC> }) {
 					y={(y += 35)}
 					w={-10}
 					h={30}
-					bg={palette.bg(algo.disabled.value ? 3 : 4)}
+					bg={palette.bg(algo.disabled.value ? 3 : algo === props.algo.value ? 5 : 4)}
 					onInput={({ type, button }) => {
 						//print(type, button);
 						if (type !== "mouse_click") return;
