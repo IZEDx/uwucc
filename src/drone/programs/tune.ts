@@ -333,7 +333,7 @@ function tuningMenu(): void {
 
 program(
 	tuningMenu,
-	controller.loop({
+	controller.run({
 		display: true,
 		load: false,
 		tick: false,

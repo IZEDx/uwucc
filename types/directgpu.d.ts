@@ -183,6 +183,19 @@ declare namespace DirectGPU {
 
 	// Point used in polygon / polyline / bezier functions: [x, y]
 	export type Point = [number, number];
+
+	export type Monitor = {
+		index: number;
+		found: boolean;
+		distance: number;
+		x: number;
+		name?: string;
+		y: number;
+		z: number;
+		width: number;
+		height: number;
+		facing: string;
+	};
 }
 // ------------------------------------------------------------
 // Module interfaces
@@ -198,10 +211,20 @@ declare namespace DirectGPUModules {
 		autoDetectAndCreateDisplays(maxCount: number): unknown[];
 		autoDetectAndCreateDisplays(maxCount: number, resolutionMultiplier: number): unknown[];
 
-		autoDetectMonitor(): string;
+		autoDetectMonitor(side?: string): [number, number, number];
+		setOpacity(display: number, opacity: number): void;
+		setBackgroundOpacity(display: number, opacity: number): void;
 
-		autoDetectMonitors(): unknown[];
-		autoDetectMonitors(maxCount: number): unknown[];
+		autoDetectMonitors(): {
+			found: boolean;
+			count: number;
+			monitors: DirectGPU.Monitor[];
+		};
+		autoDetectMonitors(maxCount: number): {
+			found: boolean;
+			count: number;
+			monitors: DirectGPU.Monitor[];
+		};
 
 		clearAllDisplays(): void;
 

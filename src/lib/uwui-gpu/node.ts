@@ -30,6 +30,8 @@ export class Node<P extends UwUi.Props = any, C extends UwUi.Children = any> {
 	dirty = true;
 	gpu?: GPUView;
 	opaque = false;
+	dt = 0;
+	frame = 0;
 
 	private _forceRender = false;
 	private disposers = [] as Unsub[];
@@ -91,7 +93,9 @@ export class Node<P extends UwUi.Props = any, C extends UwUi.Children = any> {
 		return false;
 	}
 
-	render(gpu: GPUView) {
+	render(gpu: GPUView, frame: number, dt: number) {
+		this.frame = frame;
+		this.dt = dt;
 		const prevNode = Node.current;
 		Node.current = this;
 		Signal.hook((signal) => {
@@ -109,7 +113,7 @@ export class Node<P extends UwUi.Props = any, C extends UwUi.Children = any> {
 			if (!this.gpu) throw new Error("Uh oh gpu is gone");
 			for (const child of this.children) {
 				if (this.dirty || this.forceRender) child.dirty = true;
-				child.render(this.gpu);
+				child.render(this.gpu, frame, dt);
 			}
 			this.dirty = false;
 		} catch (e) {

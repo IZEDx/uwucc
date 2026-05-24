@@ -1,132 +1,7 @@
 import { printError } from "../chalk";
 import { clamp } from "../math";
+import { prepareOBJ } from "./3d";
 import { Pos, Rect, RGB } from "./types";
-
-/*
-export interface GPUView {
-	clear(r?: number, g?: number, b?: number): void;
-	fillRect(x: number, y: number, w: number, h: number, r: number, g: number, b: number): void;
-	drawRect(x: number, y: number, w: number, h: number, r: number, g: number, b: number): void;
-	drawLine(x1: number, y1: number, x2: number, y2: number, r: number, g: number, b: number): void;
-	drawCircle(
-		cx: number,
-		cy: number,
-		radius: number,
-		r: number,
-		g: number,
-		b: number,
-		filled: boolean,
-	): void;
-	drawEllipse(
-		cx: number,
-		cy: number,
-		rx: number,
-		ry: number,
-		r: number,
-		g: number,
-		b: number,
-		filled: boolean,
-	): void;
-	fillEllipse(
-		cx: number,
-		cy: number,
-		rx: number,
-		ry: number,
-		r: number,
-		g: number,
-		b: number,
-	): void;
-	drawPolygon(points: DirectGPU.Point[], r: number, g: number, b: number): void;
-	drawPolylines(points: DirectGPU.Point[], r: number, g: number, b: number): void;
-	drawText(
-		text: string,
-		x: number,
-		y: number,
-		r: number,
-		g: number,
-		b: number,
-		fontName: string,
-		fontSize: number,
-		style: DirectGPU.FontStyle,
-	): DirectGPU.TextMetrics;
-	drawTextFast(
-		text: string,
-		x: number,
-		y: number,
-		r?: number,
-		g?: number,
-		b?: number,
-		fontSize?: number,
-	): DirectGPU.TextMetrics;
-	drawTextWrapped(
-		text: string,
-		x: number,
-		y: number,
-		maxWidth: number,
-		r: number,
-		g: number,
-		b: number,
-		lineSpacing: number,
-		fontName: string,
-		fontSize: number,
-		style: DirectGPU.FontStyle,
-	): DirectGPU.TextMetrics;
-	drawTextWrappedFast(
-		text: string,
-		x: number,
-		y: number,
-		maxWidth: number,
-		r?: number,
-		g?: number,
-		b?: number,
-		fontSize?: number,
-	): DirectGPU.TextMetrics;
-	drawRoundedRect(
-		x: number,
-		y: number,
-		w: number,
-		h: number,
-		radius: number,
-		r: number,
-		g: number,
-		b: number,
-		filled: boolean,
-	): void;
-	drawStar(
-		cx: number,
-		cy: number,
-		pointCount: number,
-		outerRadius: number,
-		innerRadius: number,
-		r: number,
-		g: number,
-		b: number,
-		filled: boolean,
-	): void;
-	drawSVGPath(
-		pathData: string,
-		x: number,
-		y: number,
-		scale: number,
-		r: number,
-		g: number,
-		b: number,
-	): void;
-	setPixel(x: number, y: number, r: number, g: number, b: number): void;
-	getPixel(x: number, y: number): DirectGPU.Color;
-	drawBezierCurve(
-		points: DirectGPU.Point[],
-		r: number,
-		g: number,
-		b: number,
-		segments?: number,
-	): void;
-	childRect(x: number, y: number, w: number, h: number): GPUView;
-	withOffset(x: number, y: number): GPUView;
-	getOpaque(): boolean;
-	setOpaque(value: boolean): void;
-}
-	*/
 
 function intersects(a: Rect, b: Rect) {
 	return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
@@ -167,6 +42,7 @@ export class GPUView {
 
 	clear(r = 0, g = 0, b = 0) {
 		this.gpu.clear(this.display, r, g, b);
+		this.gpu.clearZBuffer(this.display);
 	}
 
 	translatePos({ x, y }: Pos) {
@@ -390,5 +266,31 @@ export class GPUView {
 	}
 	drawBezierCurve(points: DirectGPU.Point[], r: number, g: number, b: number, segments?: number) {
 		this.gpu.drawBezierCurve(this.display, points, r, g, b, segments);
+	}
+
+	loadObjModel(path: string, normalize = false) {
+		const name = fs.getName(path);
+		const file = fs.open(path, "r")[0];
+		const objData = file!.readAll()!;
+		file?.close();
+
+		if (normalize) {
+			const [preparedOBJ, vertexCount, faceCount] = prepareOBJ(objData);
+			return {
+				id: this.gpu.load3DModel(preparedOBJ),
+				vertexCount,
+				faceCount,
+				path,
+				name,
+			};
+		} else {
+			return {
+				id: this.gpu.load3DModel(objData),
+				vertexCount: 0,
+				faceCount: 0,
+				path,
+				name,
+			};
+		}
 	}
 }

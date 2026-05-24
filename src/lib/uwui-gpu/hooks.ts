@@ -10,7 +10,7 @@ export function useHook<T>(create: (node: Node) => T): T {
 	const existing = node.hooks[index] as T | undefined;
 	if (existing) return existing;
 	const created = create(node);
-	node.hooks[index] = created;
+	node.hooks[index] = created ?? {};
 	return created;
 }
 

@@ -1,6 +1,7 @@
 import { anyKey, showHeader } from "../lib/chalk";
 import { Config } from "../lib/config";
 import { clamp, round, Thrusts } from "../lib/util";
+import { Signal, signal } from "../lib/uwui-gpu/signal";
 
 export interface SensorState {
 	alt: number;
@@ -109,7 +110,7 @@ export const peripherals = {
 	},
 } satisfies Peripherals;
 
-export const state = {
+export const state = signal({
 	alt: 0,
 	airP: 0,
 	velU: 0,
@@ -117,27 +118,29 @@ export const state = {
 	velR: 0,
 	pitch: 0,
 	roll: 0,
+	orientation: undefined as any as Quaternion, //new Quaternion(new Vector(0, 0, 0), 0),
 	input: { x: 0, y: 0, z: 0 },
 	cruise: false,
-};
+});
 
 const speeds: Record<string, number> = {};
 
 export function pullState() {
 	const p = peripherals;
 	const pose = sublevel.getLogicalPose();
-	state.alt = pose.position.y;
-	state.airP = aero.getAirPressure(new Vector(0, state.alt, 0)); // p.sensors.altitude.getAirPressure();
+	state.value.alt = pose.position.y;
+	state.value.airP = aero.getAirPressure(new Vector(0, state.value.alt, 0)); // p.sensors.altitude.getAirPressure();
 
 	const vel = sublevel.getLinearVelocity();
-	state.velF = vel.x;
-	state.velU = vel.y;
-	state.velR = vel.z;
+	state.value.velF = vel.x;
+	state.value.velU = vel.y;
+	state.value.velR = vel.z;
 
+	state.value.orientation = pose.orientation;
 	const [pitch, yaw, roll] = pose.orientation.toEuler();
 	//const angles = p.sensors.gimbal.getAngles();
-	state.pitch = math.deg(roll); // -angles[1];
-	state.roll = math.deg(pitch); // angles[0];
+	state.value.pitch = math.deg(roll); // -angles[1];
+	state.value.roll = math.deg(pitch); // angles[0];
 
 	const leftInput = p.inputs.xyz.getAnalogInput("left");
 	const rightInput = p.inputs.xyz.getAnalogInput("right");
@@ -146,13 +149,13 @@ export function pullState() {
 	const frontInput = p.inputs.xyz.getAnalogInput("front");
 	const backInput = p.inputs.xyz.getAnalogInput("back");
 
-	state.input = {
+	state.value.input = {
 		x: rightInput / 15 - leftInput / 15,
 		y: topInput / 15 - bottomInput / 15,
 		z: frontInput / 15 - backInput / 15,
 	};
-	state.cruise = p.inputs.cruise.isOn();
-	return state;
+	state.value.cruise = p.inputs.cruise.isOn();
+	return state.value;
 }
 
 export function peripheralsSetup() {

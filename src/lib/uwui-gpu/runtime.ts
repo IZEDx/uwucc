@@ -3,7 +3,14 @@ import { GPUView } from "./gpu-view";
 import { log } from "../util";
 import { printValue } from "../chalk";
 
+let renderFns: (() => any)[] = [];
+let inputFns: (() => any)[] = [];
+
 export namespace UwUi {
+	export const gpu = peripheral.find("directgpu")[0] as DirectGPUPeripheral;
+	export const monitors = gpu.autoDetectMonitors().monitors;
+	sleep(0);
+
 	export type Child = string | number | Node | undefined | Child[];
 	export type Props = Record<string, any> & {
 		key?: string;
@@ -26,16 +33,24 @@ export namespace UwUi {
 		return new Node<P, C>(component, props ?? ({} as P), children as C, props?.key);
 	}
 
-	export function render(
+	export function clear() {
+		renderFns = [];
+		inputFns = [];
+		gpu.clearAll3DModels();
+		gpu.clearAllDisplays();
+		for (const display of gpu.listDisplays()) {
+			gpu.removeDisplay(display);
+		}
+	}
+
+	export function mount(
 		root: () => Node,
 		gpu: DirectGPUPeripheral,
 		display = gpu.autoDetectAndCreateDisplay(),
 	) {
 		if (!display) throw new Error("Display not available");
 
-		gpu.setTransparentBackground(display, true);
-		gpu.setTransparencyColor(display, -1, -1, -1);
-
+		let frame = 0;
 		const info = gpu.getDisplayInfo(display);
 		const tree = root();
 		const rootView = new GPUView(gpu, display, {
@@ -45,58 +60,74 @@ export namespace UwUi {
 			h: info.pixelHeight,
 		});
 
-		try {
-			parallel.waitForAny(
-				() => {
-					let frame = 0;
-					while (true) {
-						frame += 1;
-						parallel.waitForAll(
-							() => {
-								gpu.clearZBuffer(display);
-								tree.render(rootView);
-								gpu.updateDisplay(display);
-							},
-							() => sleep(0.05),
-						);
-					}
-				},
-				() => {
-					while (true) {
-						const e = os.pullEvent();
-						if (e[0] === "Terminate") return;
-					}
-				},
-				() => {
-					while (true) {
-						if (gpu.hasEvents(display)) {
-							const event = gpu.pollEvent(display);
-							if (event && event.type && event.x && event.y) {
-								tree.input(event);
-							}
-						}
-						/*
-						local event = gpu.pollEvent(display)
+		renderFns.push(() => {});
 
-						if event and event.type == "mouse_click" then
-							drawing = true
-							points = {{event.x, event.y}}
-						elseif event and event.type == "mouse_drag" and drawing then
-							table.insert(points, {event.x, event.y})
-							gpu.drawPolylines(display, points, 0, 255, 255)
-							gpu.updateDisplay(display)
-						elseif event and event.type == "mouse_up" then
-							drawing = false
-						end
-						*/
-						sleep(0.05);
+		inputFns.push(() => {
+			if (gpu.hasEvents(display)) {
+				const event = gpu.pollEvent(display);
+				if (event && event.type && event.x && event.y) {
+					tree.input(event);
+				}
+			}
+		});
+	}
+
+	export function render(root: () => Node, monitor = monitors[0], resolution = 1) {
+		const display = gpu.createDisplay(
+			monitor.x,
+			monitor.y,
+			monitor.z,
+			monitor.facing,
+			monitor.width,
+			monitor.height,
+		);
+		if (!display) throw new Error("Display not available");
+
+		let frame = 0;
+		const info = gpu.getDisplayInfo(display);
+		const tree = root();
+		const rootView = new GPUView(gpu, display, {
+			x: 0,
+			y: 0,
+			w: info.pixelWidth,
+			h: info.pixelHeight,
+		});
+
+		parallel.waitForAny(
+			() => {
+				let lastTime = os.clock() - 0.05;
+				while (true) {
+					const now = os.clock();
+					const dt = now - lastTime;
+					lastTime = now;
+
+					parallel.waitForAll(
+						() => sleep(0),
+						() => {
+							tree.render(rootView, frame, dt);
+							gpu.updateDisplay(display);
+							frame += 1;
+						},
+					);
+				}
+			},
+			() => {
+				while (true) {
+					if (gpu.hasEvents(display)) {
+						const event = gpu.pollEvent(display);
+						if (event && event.type && event.x && event.y) {
+							tree.input(event);
+						}
 					}
-				},
-			);
-		} catch (e) {
-			throw e;
-		} finally {
-			gpu.removeDisplay(display);
-		}
+					sleep(0.05);
+				}
+			},
+			() => {
+				while (true) {
+					const e = os.pullEvent();
+					if (e[0] === "Terminate") return;
+				}
+			},
+		);
 	}
 }

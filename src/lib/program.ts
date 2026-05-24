@@ -16,7 +16,7 @@ export function program(...fns: Array<() => void>): void {
 		}),
 	);
 
-	term.setGraphicsMode(false);
+	term.setGraphicsMode?.(false);
 	//if (!ok) anyKey();
 	//shell.run("disk/startup.lua");
 }

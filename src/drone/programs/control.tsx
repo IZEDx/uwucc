@@ -1,32 +1,16 @@
 import { program } from "../../lib/program";
 import { Controller } from "../controller";
 import { clamp } from "../../lib/util";
-import { peripherals, state, stopRotors } from "../peripherals";
+import { state, stopRotors } from "../peripherals";
 import { showHeader } from "../../lib/chalk";
 import { UwUi } from "../../lib/uwui-gpu/runtime";
 import { Dashboard } from "../uwui/dashboard";
+import { HUD } from "../uwui/hud";
 
-interface Velocity {
-	x: number;
-	y: number;
-	z: number;
-}
-
-/*
-const args = { ...arg };
-const hasTabFlag = Object.values(args).includes("--tab");
-
-// Fork to new tab if not already in one
-function fork(): void {
-	const argList = Object.values(args).join(" ");
-	const newTab = shell.openTab(shell.getRunningProgram(), argList, "--tab");
-	multishell.setTitle(newTab, "Controller");
-	shell.switchTab(newTab);
-}
-*/
+showHeader(":3");
 
 const controller = new Controller();
-controller.inputs.alt = controller.inputs.alt;
+
 const cfg = controller.cfg.extend({
 	controller: {
 		min_alt: 50,
@@ -39,11 +23,8 @@ const cfg = controller.cfg.extend({
 	},
 }).data;
 
-showHeader(":3");
-print("huh");
-const vel: Velocity = { x: 0, y: 0, z: 0 };
-
 function inputLoop(): void {
+	const vel = { x: 0, y: 0, z: 0 };
 	let lastTime = os.clock();
 	sleep(0.5);
 
@@ -56,21 +37,27 @@ function inputLoop(): void {
 
 		const maxVelY = cfg.controller.max_vel_y;
 		vel.y =
-			state.input.y !== 0 ? clamp(vel.y + state.input.y * accel * dt, -maxVelY, maxVelY) : 0;
+			state.value.input.y !== 0
+				? clamp(vel.y + state.value.input.y * accel * dt, -maxVelY, maxVelY)
+				: 0;
+
+		controller.inputs.velU = vel.y;
+		/*
 		controller.inputs.alt = clamp(
 			controller.inputs.alt + vel.y * dt,
 			cfg.controller.min_alt,
 			cfg.controller.max_alt,
 		);
+		*/
 
 		const maxVelX = cfg.controller.max_vel_x;
 		const maxVelZ = cfg.controller.max_vel_z;
-		if (!state.cruise) {
-			vel.x = state.input.x * maxVelX;
-			vel.z = state.input.z * maxVelZ;
+		if (!state.value.cruise) {
+			vel.x = state.value.input.x * maxVelX;
+			vel.z = state.value.input.z * maxVelZ;
 		} else {
-			vel.x = clamp(vel.x + state.input.x * accel * dt, -maxVelX, maxVelX);
-			vel.z = clamp(vel.z + state.input.z * accel * dt, -maxVelZ, maxVelZ);
+			vel.x = clamp(vel.x + state.value.input.x * accel * dt, -maxVelX, maxVelX);
+			vel.z = clamp(vel.z + state.value.input.z * accel * dt, -maxVelZ, maxVelZ);
 		}
 		controller.inputs.velR = vel.x;
 		controller.inputs.velF = vel.z;
@@ -80,10 +67,26 @@ function inputLoop(): void {
 	}
 }
 
-const gpu = peripheral.find("directgpu")[0] as DirectGPUPeripheral;
-const display = gpu.autoDetectAndCreateDisplay()!;
-program(controller.loop(), inputLoop, () =>
-	UwUi.render(() => <Dashboard controller={controller} />, gpu, display),
+program(
+	controller.run(),
+	inputLoop,
+	() => UwUi.render(() => <Dashboard controller={controller} />, UwUi.monitors[0], 0),
+	() => {
+		const mon = UwUi.monitors[1];
+		UwUi.render(
+			() => <HUD controller={controller} />,
+			{
+				...mon,
+				x: mon.x + 3,
+				z: mon.z - 2,
+				facing: "cc:west:south:up",
+				width: 5,
+				height: 4,
+			},
+			2,
+		);
+	},
 );
-gpu.removeDisplay(display);
+
+UwUi.clear();
 stopRotors();

@@ -67,7 +67,7 @@ export class Controller {
 		this.tunings = options.tunings ?? new Config("tunings", {} as Record<Controller.Part, any>);
 
 		this.inputs = {
-			alt: sensors.alt,
+			alt: sensors.value.alt,
 			velF: 0,
 			velU: 0,
 			velR: 0,
@@ -132,36 +132,38 @@ export class Controller {
 		status.avgDt = this._lastDts.reduce((a, b) => a + b, 0) / this._lastDts.length;
 
 		// ALTITUDE -> vertical velocity target
-		const velUTarget = this.algos.alt.compute(sensors.alt, targets.alt, status.avgDt);
+		const velUTarget = this.algos.alt.compute(sensors.value.alt, targets.alt, status.avgDt);
 
 		// vertical velocity -> thrust
 		const prevVelU = this.algos.velU.sensorHistory.youngest() || 0;
 
-		const velUCmd = this.algos.velU.compute(
-			lerp(prevVelU, sensors.velU, 0.2),
-			velUTarget,
-			status.avgDt,
-		);
+		const velUCmd = this.algos.velU.disabled.value
+			? velUTarget
+			: this.algos.velU.compute(
+					lerp(prevVelU, sensors.value.velU, 0.2),
+					targets.velU + velUTarget,
+					status.avgDt,
+				);
 
 		status.base = clamp(cfg.base.hover + velUCmd, cfg.base.min, cfg.base.max);
 
 		// horizontal velocity -> attitude
 		const prevVelF = this.algos.velF.sensorHistory.youngest() || 0;
 		const velFCmd = this.algos.velF.compute(
-			lerp(prevVelF, sensors.velF, 0.2),
+			lerp(prevVelF, sensors.value.velF, 0.2),
 			targets.velF,
 			status.avgDt,
 		);
 
 		const maxPitch = cfg.controller.max_pitch;
 		const pitchTarget = clamp(targets.pitch - velFCmd * maxPitch, -maxPitch, maxPitch);
-		const pitchCmd = this.algos.pitch.compute(sensors.pitch, pitchTarget, status.avgDt);
+		const pitchCmd = this.algos.pitch.compute(sensors.value.pitch, pitchTarget, status.avgDt);
 
-		const velRCmd = this.algos.velR.compute(sensors.velR, targets.velR, status.avgDt);
+		const velRCmd = this.algos.velR.compute(sensors.value.velR, targets.velR, status.avgDt);
 
 		const maxRoll = cfg.controller.max_roll;
 		const rollTarget = clamp(targets.roll + velRCmd * maxRoll, -maxRoll, maxRoll);
-		const rollCmd = this.algos.roll.compute(sensors.roll, rollTarget, status.avgDt);
+		const rollCmd = this.algos.roll.compute(sensors.value.roll, rollTarget, status.avgDt);
 
 		status.thrusts = computeRotorThrusts(status.base, pitchCmd, rollCmd, cfg.trims);
 		normalizeThrusts(status.thrusts);
@@ -174,7 +176,7 @@ export class Controller {
 		});
 	}
 
-	loop() {
+	run() {
 		return () => {
 			const opts = this.options || {};
 			opts.display = opts.display !== false;

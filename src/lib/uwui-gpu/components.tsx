@@ -78,16 +78,15 @@ export function Line(props: LineProps, ...points: LinePoint[]) {
 }
 
 export function Scene(props: any, ...children: any[]) {
-	useTick();
 	const _gpu = useGPU();
 	useHook(() => {
 		const gpu = _gpu.gpu;
 		const display = _gpu.display;
 		gpu.setupCamera(display, 50, 0.05, 100);
-		gpu.setCameraPosition(display, 10, 0, -30);
-		gpu.lookAt(display, 20, 0, 10);
+		gpu.setCameraPosition(display, 0, 0, -30);
+		gpu.lookAt(display, 0, 0, 0);
 
-		gpu.setBackfaceCulling?.(display, false);
+		gpu.setBackfaceCulling?.(display, true);
 		gpu.setPhongShading?.(display, true);
 
 		gpu.clearLights(display);

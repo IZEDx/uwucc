@@ -5,7 +5,7 @@ import { centerValues, clamp } from "../../lib/util";
 import { anyKey, showHeader } from "../../lib/chalk";
 
 const TRIM_STEP = 0.00005;
-const MAX_TRIM = 0.3;
+const MAX_TRIM = 0.7;
 const ANGLE_THRESHOLD = 1.5;
 const SETTLE_TIME = 1;
 const TARGET_HEIGHT = 3;
@@ -50,9 +50,9 @@ function calibrationLoop(): void {
 	print("");
 	anyKey();
 
-	const settledPitch = sensors.pitch;
-	const settledRoll = sensors.roll;
-	const originAlt = sensors.alt;
+	const settledPitch = sensors.value.pitch;
+	const settledRoll = sensors.value.roll;
+	const originAlt = sensors.value.alt;
 	const startTime = os.clock();
 
 	while (true) {
@@ -72,8 +72,8 @@ function calibrationLoop(): void {
 
 		controller.tick();
 
-		const pitchError = sensors.pitch - settledPitch;
-		const rollError = sensors.roll - settledRoll;
+		const pitchError = sensors.value.pitch - settledPitch;
+		const rollError = sensors.value.roll - settledRoll;
 
 		showHeader("Calibrating Trims...");
 		print("");
@@ -84,7 +84,7 @@ function calibrationLoop(): void {
 		print(
 			string.format(
 				"Height: %d%%",
-				clamp(((sensors.alt - originAlt) * 100) / TARGET_HEIGHT, 0, 100),
+				clamp(((sensors.value.alt - originAlt) * 100) / TARGET_HEIGHT, 0, 100),
 			),
 		);
 		print("");
@@ -144,7 +144,7 @@ function calibrationLoop(): void {
 			trims[key] = clamp(trims[key], -MAX_TRIM, MAX_TRIM);
 		}
 
-		if (sensors.alt - originAlt > 0.5) {
+		if (sensors.value.alt - originAlt > 0.5) {
 			trims.fl -= TRIM_STEP * 2;
 			trims.fr -= TRIM_STEP * 2;
 			trims.bl -= TRIM_STEP * 2;
@@ -156,7 +156,7 @@ function calibrationLoop(): void {
 			trims.fr += TRIM_STEP * 3;
 			trims.bl += TRIM_STEP * 3;
 			trims.br += TRIM_STEP * 3;
-			if (sensors.alt - originAlt > TARGET_HEIGHT) {
+			if (sensors.value.alt - originAlt > TARGET_HEIGHT) {
 				success = true;
 				break;
 			}
@@ -188,4 +188,4 @@ function calibrationLoop(): void {
 	}
 }
 
-program(controller.loop(), calibrationLoop);
+program(controller.run(), calibrationLoop);

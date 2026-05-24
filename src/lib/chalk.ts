@@ -29,6 +29,11 @@ term.setPaletteColor(colors.gray, parseInt("#2e2540".slice(1), 16));
 term.setPaletteColor(colors.lightGray, parseInt("#3d3357".slice(1), 16));
 
 /** @noSelf */
+export function printf(text: string, ...params: any[]) {
+	print(string.format(text, ...params));
+}
+
+/** @noSelf */
 export function showHeader(title?: string): void {
 	const [w, h] = term.getSize();
 	let shellTitle = title || getHeader();

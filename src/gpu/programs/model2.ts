@@ -24,27 +24,33 @@ const MODEL_B = 255;
 
 const gpu = peripheral.find("directgpu")[0] as DirectGPUPeripheral;
 
+const dashboardDisplay = gpu.autoDetectAndCreateDisplay()!;
+sleep(0);
+gpu.fillRect(dashboardDisplay, 0, 0, 100, 100, 200, 100, 100);
+gpu.updateDisplay(dashboardDisplay);
+
 const m = gpu.autoDetectMonitors().monitors[1];
-const display = gpu.createDisplay(m.x + 3, m.y + 1, m.z - 1, "cc:west:south:up", 3, 3);
+const hudDisplay = gpu.createDisplay(m.x + 3, m.y + 1, m.z - 1, "cc:west:south:up", 3, 3);
+sleep(0);
+gpu.fillRect(hudDisplay, 0, 0, 100, 100, 200, 100, 100);
+gpu.updateDisplay(hudDisplay);
 
-//const display = gpu.autoDetectAndCreateDisplay()!;
+gpu.enableDeltaMode(hudDisplay);
 
-gpu.enableDeltaMode(display);
+gpu.setBackgroundOpacity(hudDisplay, 0);
+gpu.setOpacity(hudDisplay, 80);
 
-gpu.setBackgroundOpacity(display, 0);
-gpu.setOpacity(display, 80);
+gpu.setupCamera(hudDisplay, FOV, NEAR, FAR);
+gpu.setCameraPosition(hudDisplay, CAMERA_X, CAMERA_Y, CAMERA_Z);
+gpu.lookAt(hudDisplay, 0, 0, 0);
 
-gpu.setupCamera(display, FOV, NEAR, FAR);
-gpu.setCameraPosition(display, CAMERA_X, CAMERA_Y, CAMERA_Z);
-gpu.lookAt(display, 0, 0, 0);
+gpu.setBackfaceCulling(hudDisplay, false);
+gpu.setPhongShading(hudDisplay, true);
 
-gpu.setBackfaceCulling(display, false);
-gpu.setPhongShading(display, true);
-
-gpu.clearLights(display);
-gpu.addAmbientLight(display, 255, 255, 255, 0.95);
-gpu.addDirectionalLight(display, -0.45, -0.85, -0.35, 255, 255, 255, 0.65);
-gpu.addDirectionalLight(display, 0.5, 0.25, -0.7, 120, 180, 255, 0.25);
+gpu.clearLights(hudDisplay);
+gpu.addAmbientLight(hudDisplay, 255, 255, 255, 0.95);
+gpu.addDirectionalLight(hudDisplay, -0.45, -0.85, -0.35, 255, 255, 255, 0.65);
+gpu.addDirectionalLight(hudDisplay, 0.5, 0.25, -0.7, 120, 180, 255, 0.25);
 
 const file = fs.open(OBJ_FILE, "r")[0];
 const objData = file!.readAll()!;
@@ -66,13 +72,13 @@ try {
 
 		yaw = (yaw + ROTATE_SPEED * dt) % 360;
 
-		gpu.clear(display, BG_R, BG_G, BG_B);
-		gpu.clearZBuffer(display);
+		gpu.clear(hudDisplay, BG_R, BG_G, BG_B);
+		gpu.clearZBuffer(hudDisplay);
 		//gpu.fillRect(display, 0, 0, 10, 10, 200, 0, 0);
 
 		//const [pitch, yaw, roll] = sublevel.getLogicalPose().orientation.toEuler();
 		gpu.draw3DModel(
-			display,
+			hudDisplay,
 			modelId,
 			0,
 			0,
@@ -86,7 +92,7 @@ try {
 			MODEL_B,
 		);
 
-		gpu.updateDisplay(display);
+		gpu.updateDisplay(hudDisplay);
 
 		sleep(0.03);
 	}
@@ -94,7 +100,7 @@ try {
 	printError(e);
 }
 
-gpu.clear(display, 0, 0, 0);
-gpu.updateDisplay(display);
+gpu.clear(hudDisplay, 0, 0, 0);
+gpu.updateDisplay(hudDisplay);
 gpu.unload3DModel?.(modelId);
-gpu.removeDisplay(display);
+gpu.removeDisplay(hudDisplay);
