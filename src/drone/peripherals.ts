@@ -1,7 +1,8 @@
 import { anyKey, showHeader } from "../lib/chalk";
 import { Config } from "../lib/config";
-import { clamp, round, Thrusts } from "../lib/util";
+import { Thrusts } from "./utils";
 import { Signal, signal } from "../lib/uwui-gpu/signal";
+import { clamp, round } from "../lib/math";
 
 export interface SensorState {
 	alt: number;

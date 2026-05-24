@@ -1,5 +1,4 @@
-import { lerp } from "../math";
-import { clamp } from "../util";
+import { lerp, clamp } from "../math";
 
 const colIdxMap = {} as Record<string, number | undefined>;
 let currentColIdx = 0;

@@ -1,8 +1,9 @@
 import { program } from "../../lib/program";
 import { Controller } from "../controller";
 import { state as sensors, stopRotors } from "../peripherals";
-import { centerValues, clamp } from "../../lib/util";
+import { centerValues } from "../utils";
 import { anyKey, showHeader } from "../../lib/chalk";
+import { clamp } from "../../lib/math";
 
 const TRIM_STEP = 0.00005;
 const MAX_TRIM = 0.7;

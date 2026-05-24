@@ -1,6 +1,6 @@
 import { Config } from "../config";
 import { History } from "../history";
-import { clamp } from "../util";
+import { clamp } from "../math";
 
 type ZNConstants = {
 	kp: number;

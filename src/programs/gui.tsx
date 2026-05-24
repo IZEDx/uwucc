@@ -1,7 +1,3 @@
-import { file } from "cc.shell.completion";
-import { anyKey, showHeader, waitForKey } from "../lib/chalk";
-import { lerp, range, round } from "../lib/math";
-import pipe from "../lib/pipe";
 import { program } from "../lib/program";
 import { Color } from "../lib/uwui/color";
 import { Box, BoxProps, Button, Columns, If, Text, TextProps } from "../lib/uwui/components";

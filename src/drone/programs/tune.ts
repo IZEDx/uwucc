@@ -16,6 +16,7 @@ const ZN = {
 	D_GAIN: 0.075, // Kd = 0.075 * Kp * Pu
 };
 */
+/*
 
 type ZNConstants = {
 	kp: number;
