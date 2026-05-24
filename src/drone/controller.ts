@@ -1,12 +1,12 @@
 import { PID } from "../lib/algorithm/pid";
 import { Config } from "../lib/config";
-import { clamp, computeRotorThrusts, normalizeThrusts, Thrusts } from "../lib/util";
+import { computeRotorThrusts, normalizeThrusts, Thrusts } from "./utils";
 import { applyThrusts, peripherals, state as sensors, stateLoop, stopRotors } from "./peripherals";
 import { KeyEvent, pullEventAs } from "../lib/events";
 import { Algorithm } from "../lib/algorithm/abstract";
 import { LAC } from "../lib/algorithm/lac";
 import { signal } from "../lib/uwui-gpu/signal";
-import { lerp } from "../lib/math";
+import { clamp, lerp } from "../lib/math";
 
 export const parts = ["alt", "velF", "velU", "velR", "pitch", "roll"] as const;
 
