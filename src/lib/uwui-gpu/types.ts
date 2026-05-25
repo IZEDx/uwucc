@@ -18,3 +18,15 @@ export type Section = Rect & {
 	align: "top" | "bottom" | "middle";
 	justify: "left" | "center" | "right";
 };
+
+export type Pos3D = {
+	x: number;
+	y: number;
+	z: number;
+};
+
+export type Rotation = {
+	pitch: number;
+	yaw: number;
+	roll: number;
+};

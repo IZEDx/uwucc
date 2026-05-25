@@ -106,6 +106,30 @@ export function useGPU(
 	return node.gpu;
 }
 
+export function use3D() {
+	useHook((node) => {
+		const display = node.gpu!.display;
+		const gpu = node.gpu!.gpu;
+
+		gpu.enableDeltaMode(display);
+
+		gpu.setBackgroundOpacity(display, 0);
+		gpu.setOpacity(display, 80);
+
+		gpu.setupCamera(display, 50, 0.05, 100);
+		gpu.setCameraPosition(display, 0, 0, -10);
+		gpu.lookAt(display, 0, 0, 0);
+
+		gpu.setBackfaceCulling(display, false);
+		gpu.setPhongShading(display, true);
+
+		gpu.clearLights(display);
+		gpu.addAmbientLight(display, 255, 255, 255, 0.95);
+		gpu.addDirectionalLight(display, -0.45, -0.85, -0.35, 255, 255, 255, 0.65);
+		gpu.addDirectionalLight(display, 0.5, 0.25, -0.7, 120, 180, 255, 0.25);
+	});
+}
+
 export function each<T, R>(items: T[] | Signal<T[]>, fn: (item: T, index: number) => R): R[] {
 	const list = items instanceof Signal ? items.value : items;
 	return list.map((v, i) => {

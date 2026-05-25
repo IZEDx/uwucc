@@ -3,6 +3,10 @@ export type MaybeGetter<T> = Getter<T> | T;
 export type Setter<T> = (v: T) => void;
 export type Unsub = () => void;
 
+export type Getters<T extends Record<string, any>> = {
+	[K in keyof T]: MaybeGetter<T[K]>;
+};
+
 export namespace Signal {
 	export type Resolved<T> = T extends Signal<infer R> ? R : T;
 	export type ResolvedTuple<T> = T extends readonly [infer Head, ...infer Tail]

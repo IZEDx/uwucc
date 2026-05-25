@@ -1,8 +1,9 @@
+import { printValue } from "../chalk";
 import { clamp } from "../math";
-import { useSignal, useGPU, useTick, useHook } from "./hooks";
+import { useSignal, useGPU, useTick, useHook, useDerived } from "./hooks";
 import { UwUi } from "./runtime";
-import { extract, MaybeGetter } from "./signal";
-import { Pos, RGB, Section } from "./types";
+import { extract, Getters, MaybeGetter } from "./signal";
+import { Pos, Pos3D, RGB, Rotation, Section } from "./types";
 
 export type BoxProps = Partial<Section> & {
 	bg?: RGB;
@@ -77,61 +78,39 @@ export function Line(props: LineProps, ...points: LinePoint[]) {
 	}
 }
 
-export function Scene(props: any, ...children: any[]) {
-	const _gpu = useGPU();
-	useHook(() => {
-		const gpu = _gpu.gpu;
-		const display = _gpu.display;
-		gpu.setupCamera(display, 50, 0.05, 100);
-		gpu.setCameraPosition(display, 0, 0, -30);
-		gpu.lookAt(display, 0, 0, 0);
-
-		gpu.setBackfaceCulling?.(display, true);
-		gpu.setPhongShading?.(display, true);
-
-		gpu.clearLights(display);
-		gpu.addAmbientLight(display, 255, 255, 255, 0.95);
-		gpu.addDirectionalLight(display, -0.45, -0.85, -0.35, 255, 255, 255, 0.65);
-		gpu.addDirectionalLight(display, 0.5, 0.25, -0.7, 120, 180, 255, 0.25);
-	});
-
-	return children;
-}
-
 export interface ModelProps {
-	pos?: MaybeGetter<{ x: number; y: number; z: number }>;
-	rot?: MaybeGetter<{ pitch: number; yaw: number; roll: number }>;
+	pos?: Partial<Pos3D>;
+	rot?: Partial<Rotation>;
+	col?: RGB;
 	file: string;
+	scale?: number;
+	normalize?: boolean;
 }
 
-export function Model(props: ModelProps) {
-	const _gpu = useGPU();
-	const gpu = _gpu.gpu;
-	let modelId = -1;
-	useHook(() => {
-		const file = fs.open(props.file, "r")[0];
-		const objData = file?.readAll()!;
-		modelId = gpu.load3DModel(objData);
-		file?.close();
+export function Model(props: Getters<ModelProps>) {
+	const gpu = useGPU();
+	const model = useDerived(() => {
+		const model = useGPU().loadObjModel(extract(props.file), extract(props.normalize));
+		return model;
 	});
 
-	if (modelId <= 0) return;
+	const pos = { x: 0, y: 0, z: 0, ...extract(props.pos) };
+	const rot = { pitch: 0, yaw: 0, roll: 0, ...extract(props.rot) };
+	const col = { r: 255, g: 255, b: 255, ...extract(props.col) };
 
-	const pos = extract(props.pos);
-	const rot = extract(props.rot);
-	gpu.draw3DModel(
-		_gpu.display,
-		modelId,
-		pos?.x ?? 0,
-		pos?.y ?? 0,
-		pos?.z ?? 0,
-		rot?.pitch ?? 0, //math.deg(-pitch),
-		rot?.yaw ?? 0,
-		rot?.roll ?? 0, //math.deg(-roll),
-		0.15, //MODEL_SCALE,
-		255, //MODEL_R,
-		255, //MODEL_G,
-		255, //MODEL_B,
+	gpu.gpu.draw3DModel(
+		gpu.display,
+		model.value.id,
+		pos.x,
+		pos.y,
+		pos.z,
+		rot.pitch,
+		rot.yaw,
+		rot.roll,
+		extract(props.scale) ?? 1,
+		col.r,
+		col.g,
+		col.b,
 	);
 }
 
