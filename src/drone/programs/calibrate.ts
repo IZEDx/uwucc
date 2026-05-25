@@ -6,10 +6,11 @@ import { anyKey, showHeader } from "../../lib/chalk";
 import { clamp } from "../../lib/math";
 
 const TRIM_STEP = 0.00005;
-const MAX_TRIM = 0.7;
-const ANGLE_THRESHOLD = 1.5;
-const SETTLE_TIME = 1;
-const TARGET_HEIGHT = 3;
+const MAX_TRIM = 1;
+
+let ANGLE_THRESHOLD = 1.5;
+let SETTLE_TIME = 1;
+let TARGET_HEIGHT = 3;
 
 const controller = new Controller({
 	load: false,

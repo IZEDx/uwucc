@@ -46,6 +46,7 @@ export const cfg = new Config("connectors", {
 		//gimbal: "gimbal_sensor_0",
 		//vel_fwd: "velocity_sensor_0",
 		//vel_right: "velocity_sensor_1",
+		nav_table: "navigation_table_0",
 	},
 	rotors: {
 		fl: "electric_motor_0",
@@ -85,6 +86,7 @@ export const peripherals = {
 		//gimbal: peripheral.wrap(cfg.data.sensors.gimbal) as GimbalSensorPeripheral,
 		//vel_fwd: peripheral.wrap(cfg.data.sensors.vel_fwd) as VelocitySensorPeripheral,
 		//vel_right: peripheral.wrap(cfg.data.sensors.vel_right) as VelocitySensorPeripheral,
+		nav_table: peripheral.wrap(cfg.data.sensors.nav_table) as NavigationTablePeripheral,
 	},
 	rotors: {
 		fl: peripheral.wrap(cfg.data.rotors.fl) as ElectricMotorPeripheral,
@@ -128,6 +130,7 @@ const speeds: Record<string, number> = {};
 
 export function pullState() {
 	const p = peripherals;
+
 	const pose = sublevel.getLogicalPose();
 	state.value.alt = pose.position.y;
 	state.value.airP = aero.getAirPressure(new Vector(0, state.value.alt, 0)); // p.sensors.altitude.getAirPressure();
@@ -194,6 +197,7 @@ export function peripheralsSetup() {
 try {
 	pullState();
 	stopRotors();
+	peripherals.sensors.nav_table.getBearing();
 } catch (e) {
 	printError(e);
 	peripheralsSetup();

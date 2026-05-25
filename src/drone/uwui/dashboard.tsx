@@ -1,5 +1,4 @@
 import { LAC } from "../../lib/algorithm/lac";
-import { Model, Scene } from "../../lib/uwui-gpu/components";
 import { Box, each, Signal, Text, useGPU, useSignal, UwUi } from "../../lib/uwui-gpu/uwui";
 import { Controller } from "../controller";
 import { state } from "../peripherals";
