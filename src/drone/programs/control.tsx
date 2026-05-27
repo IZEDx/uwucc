@@ -41,14 +41,14 @@ function inputLoop(): void {
 				? clamp(vel.y + state.value.input.y * accel * dt, -maxVelY, maxVelY)
 				: 0;
 
-		if (controller.algos.velU.disabled.value) {
+		if (controller.algos.alt.disabled.value) {
+			controller.inputs.velU = vel.y;
+		} else {
 			controller.inputs.alt = clamp(
 				controller.inputs.alt + vel.y * dt,
 				cfg.controller.min_alt,
 				cfg.controller.max_alt,
 			);
-		} else {
-			controller.inputs.velU = vel.y;
 		}
 		/*
 		 */

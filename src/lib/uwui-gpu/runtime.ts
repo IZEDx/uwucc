@@ -100,7 +100,7 @@ export namespace UwUi {
 					const now = os.clock();
 					const dt = now - lastTime;
 					lastTime = now;
-
+					if (frame % 20 === 0) tree.dirty = true;
 					parallel.waitForAll(
 						() => sleep(0),
 						() => {

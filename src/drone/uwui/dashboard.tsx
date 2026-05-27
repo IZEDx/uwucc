@@ -1,18 +1,20 @@
-import { LAC } from "../../lib/algorithm/lac";
+import { PAC } from "../../lib/algorithm/pac";
+import { Img, Svg } from "../../lib/uwui-gpu/components/img";
 import { Box, each, Signal, Text, useGPU, useSignal, UwUi } from "../../lib/uwui-gpu/uwui";
-import { Controller } from "../controller";
+import { Controller, controllerParts } from "../controller";
 import { state } from "../peripherals";
 import { AltitudeGraph } from "./altitudeGraph";
 import { palette } from "./palette";
 
 export function Dashboard(props: { controller: Controller }) {
 	const gpu = useGPU();
-	const algo = useSignal(props.controller.algos.alt as LAC);
+	const algo = useSignal(props.controller.algos.alt as PAC);
 	const { w, h } = gpu.clip;
 	return (
 		<Box w={w} h={h} bg={palette.bg(2)}>
+			<Box w={30} bg={palette.bg(3)}></Box>
 			<Box
-				x={10}
+				x={40}
 				y={10}
 				w={150}
 				h={-10}
@@ -20,10 +22,10 @@ export function Dashboard(props: { controller: Controller }) {
 				radius={20}
 				border={palette.bg(5)}
 			>
-				<Status controller={props.controller} algo={algo} />
+				<Menu controller={props.controller} algo={algo} />
 			</Box>
 			<Box
-				x={170}
+				x={200}
 				y={10}
 				w={-10}
 				h={-10}
@@ -54,16 +56,16 @@ export function Dashboard(props: { controller: Controller }) {
 	);
 }
 
-export function Status(props: { controller: Controller; algo: Signal<LAC> }) {
-	const gpu = useGPU();
+export function Menu(props: { controller: Controller; algo: Signal<PAC> }) {
 	const s = props.controller.status.value;
 	let y = 0;
 	return [
 		<Text x={10} y={(y += 10)} size={17} color={palette.text(0)}>
 			Targets
 		</Text>,
-		each(Object.entries(props.controller.inputs), ([name, input]) => {
-			const algo = props.controller.algos[name as Controller.Part];
+		each(controllerParts, (name) => {
+			const input = props.controller.inputs[name];
+			const algo = props.controller.algos[name];
 			return (
 				<Box
 					x={10}
@@ -75,7 +77,7 @@ export function Status(props: { controller: Controller; algo: Signal<LAC> }) {
 						//print(type, button);
 						if (type !== "mouse_click") return;
 						if (button === 1) {
-							props.algo.value = algo as LAC;
+							props.algo.value = algo as PAC;
 						} else if (button === 2) {
 							algo.disabled.value = !algo.disabled.value;
 						}

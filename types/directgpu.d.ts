@@ -538,13 +538,13 @@ declare namespace DirectGPUModules {
 			h: number,
 		): void;
 
-		decodePNG(base64PngData: string): DirectGPU.ImageData | Record<string, unknown>;
+		decodePNG(base64PngData: string): DirectGPU.ImageData;
 
 		decodeAndScalePNG(
 			base64PngData: string,
 			targetWidth: number,
 			targetHeight: number,
-		): DirectGPU.ImageData | Record<string, unknown>;
+		): DirectGPU.ImageData;
 
 		getPNGDimensions(
 			base64PngData: string,

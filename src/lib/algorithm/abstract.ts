@@ -10,10 +10,14 @@ export namespace Algorithm {
 		error: number;
 		output: number;
 	};
+
+	export type Config = {
+		smoothing: number;
+	};
 }
 
 export abstract class Algorithm<
-	P extends Record<string, any> = Record<string, any>,
+	P extends Algorithm.Config = Algorithm.Config,
 	S extends Record<string, any> = Record<string, any>,
 > {
 	disabled = signal(false);

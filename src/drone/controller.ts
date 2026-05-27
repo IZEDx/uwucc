@@ -7,8 +7,9 @@ import { Algorithm } from "../lib/algorithm/abstract";
 import { LAC } from "../lib/algorithm/lac";
 import { signal } from "../lib/uwui-gpu/signal";
 import { clamp, lerp } from "../lib/math";
+import { PAC } from "../lib/algorithm/pac";
 
-export const parts = ["alt", "velF", "velU", "velR", "pitch", "roll"] as const;
+export const controllerParts = ["alt", "velU", "velF", "pitch", "velR", "roll"] as const;
 
 const defaultConfig = () =>
 	new Config("config", {
@@ -30,7 +31,7 @@ const defaultConfig = () =>
 	});
 
 export namespace Controller {
-	export type Part = (typeof parts)[number];
+	export type Part = (typeof controllerParts)[number];
 	export type Algorithms = Record<Part, Algorithm>;
 
 	export type Status = {
@@ -76,12 +77,12 @@ export class Controller {
 		};
 
 		this.algos = {
-			alt: new LAC("alt", this.tunings),
-			velU: new LAC("velU", this.tunings),
-			velF: new LAC("velF", this.tunings),
-			velR: new LAC("velR", this.tunings),
-			pitch: new LAC("pitch", this.tunings),
-			roll: new LAC("roll", this.tunings),
+			alt: new PAC("alt", this.tunings),
+			velU: new PAC("velU", this.tunings),
+			velF: new PAC("velF", this.tunings),
+			velR: new PAC("velR", this.tunings),
+			pitch: new PAC("pitch", this.tunings),
+			roll: new PAC("roll", this.tunings),
 		};
 		this.reset();
 	}
@@ -109,7 +110,7 @@ export class Controller {
 	}
 
 	setInputs(inputs: Partial<Record<Controller.Part, number>>) {
-		for (const name of parts) {
+		for (const name of controllerParts) {
 			this.inputs[name] = inputs[name] ?? this.inputs[name];
 		}
 	}
@@ -135,13 +136,11 @@ export class Controller {
 		const velUTarget = this.algos.alt.compute(sensors.value.alt, targets.alt, status.avgDt);
 
 		// vertical velocity -> thrust
-		const prevVelU = this.algos.velU.sensorHistory.youngest() || 0;
-
 		const velUCmd = this.algos.velU.disabled.value
 			? velUTarget
 			: this.algos.velU.compute(
-					lerp(prevVelU, sensors.value.velU, 0.2),
-					targets.velU + velUTarget,
+					lerp(this.algos.velU.state.current, sensors.value.velU, 0.5),
+					lerp(this.algos.velU.state.target, targets.velU + velUTarget, 0.5),
 					status.avgDt,
 				);
 

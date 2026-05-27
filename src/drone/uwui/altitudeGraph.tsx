@@ -5,14 +5,13 @@ import { useSignal, useTick, useGPU } from "../../lib/uwui-gpu/hooks";
 import { Box, rgb, Signal, UwUi } from "../../lib/uwui-gpu/uwui";
 import { palette } from "./palette";
 import { RGB } from "../../lib/uwui-gpu/colors";
-import { Algorithm } from "../../lib/algorithm/abstract";
-import { LAC } from "../../lib/algorithm/lac";
 import { resolve } from "../../lib/uwui-gpu/signal";
+import { PAC } from "../../lib/algorithm/pac";
 
 const TITLE_FONT_SIZE = 12;
 const LABEL_FONT_SIZE = 10;
 
-export function AltitudeGraph(props: { algo: Signal.Maybe<LAC> }) {
+export function AltitudeGraph(props: { algo: Signal.Maybe<PAC> }) {
 	useTick();
 	const gpu = useGPU();
 	const state = useSignal({ center: 0, displayRange: 10 });

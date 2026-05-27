@@ -130,7 +130,10 @@ export function use3D() {
 	});
 }
 
-export function each<T, R>(items: T[] | Signal<T[]>, fn: (item: T, index: number) => R): R[] {
+export function each<T, R>(
+	items: readonly T[] | Signal<T[]>,
+	fn: (item: T, index: number) => R,
+): R[] {
 	const list = items instanceof Signal ? items.value : items;
 	return list.map((v, i) => {
 		const r = fn(v, i);

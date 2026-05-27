@@ -22,7 +22,8 @@
 		"luaLibImport": "require",
 		"noImplicitGlobalVariables": true,
 		"sourceMapTraceback": true,
-		"luaPlugins": [{ "name": "./tstl-plugin.ts" }]
+		"luaPlugins": [{ "name": "./tstl-plugin.ts" }],
+		"noResolvePaths": ["cc.base64"]
 		//"luaBundle": "startup.lua",
 		//"luaBundleEntry": "src/startup.ts"
 	},

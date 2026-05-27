@@ -6,6 +6,13 @@ _G.error = (message: string, level?: number | undefined) => {
 };
 */
 
+export function readFile(path: string): string | undefined {
+	const [file] = fs.open(path, "r");
+	const result = file?.readAll();
+	file?.close();
+	return result;
+}
+
 export function pairs<T extends Record<any, any>>(obj: T): [keyof T, T[keyof T]][] {
 	return Object.entries(obj);
 }
@@ -52,4 +59,46 @@ export function getLuaFunctionLabel(fn: (...args: any[]) => any): string {
 	const src = info?.short_src ?? info?.source ?? "<fn>";
 	const line = info?.linedefined ?? -1;
 	return `${src}:${line}`;
+}
+
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+const LOOKUP: number[] = [];
+for (let i = 0; i < CHARS.length; i++) LOOKUP[CHARS.charCodeAt(i)] = i;
+
+export function base64Encode(input: string): string {
+	let result = "";
+	let i = 0;
+
+	while (i < input.length) {
+		const b0 = input.charCodeAt(i++);
+		const b1 = i < input.length ? input.charCodeAt(i++) : 0;
+		const b2 = i < input.length ? input.charCodeAt(i++) : 0;
+		const rem = input.length - i;
+
+		result += CHARS[b0 >> 2];
+		result += CHARS[((b0 & 0x3) << 4) | (b1 >> 4)];
+		result += rem >= -1 ? CHARS[((b1 & 0xf) << 2) | (b2 >> 6)] : "=";
+		result += rem >= 0 ? CHARS[b2 & 0x3f] : "=";
+	}
+
+	return result;
+}
+
+export function base64Decode(input: string): string {
+	const [clean] = string.gsub(input, "=", "");
+	let result = "";
+
+	for (let i = 0; i < clean.length; i += 4) {
+		const c0 = LOOKUP[clean.charCodeAt(i)];
+		const c1 = LOOKUP[clean.charCodeAt(i + 1)];
+		const c2 = i + 2 < clean.length ? LOOKUP[clean.charCodeAt(i + 2)] : 0;
+		const c3 = i + 3 < clean.length ? LOOKUP[clean.charCodeAt(i + 3)] : 0;
+
+		result += String.fromCharCode((c0 << 2) | (c1 >> 4));
+		if (i + 2 < clean.length) result += String.fromCharCode(((c1 & 0xf) << 4) | (c2 >> 2));
+		if (i + 3 < clean.length) result += String.fromCharCode(((c2 & 0x3) << 6) | c3);
+	}
+
+	return result;
 }

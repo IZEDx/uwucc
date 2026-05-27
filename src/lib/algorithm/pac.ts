@@ -4,36 +4,38 @@ import { clamp } from "../math";
 import { Algorithm } from "./abstract";
 
 const defaultParameters = {
-	kp: 0.00005, //2.0, // Nominal gain (like Kp in PID)
+	kp: 0.005, //2.0, // Nominal gain (like Kp in PID)
 	kd: 0.05, // Derivative gain
-	minK: 0.00001, // Minimum gain bound
-	maxK: 0.03, // Maximum gain bound
+	ki: 0.05,
+	km: 10,
 
-	attack: 0.3, // Attack rate (how fast gain increases)
-	decay: 0.3, // Decay rate (how fast gain returns to nominal)
-	deadband: 0.1, // Error threshold for mode switching
-	hysteresis: 0.01, // Prevents chattering
+	iMax: 1,
+	attack: 1, // Attack rate (how fast gain increases)
+	decay: 2, // Decay rate (how fast gain returns to nominal)
+	deadband: 0.5, // Error threshold for mode switching
+	hysteresis: 0.1, // Prevents chattering
 
-	smoothing: 0.5,
+	smoothing: 0,
 };
 
 const defaultState = {
-	mode: "attack" as LAC.Mode,
+	mode: "attack" as PAC.Mode,
 	lk: 0,
 	fErr: 0,
 	pErr: 0,
+	integral: 0,
 };
 
-export namespace LAC {
+export namespace PAC {
 	export type Mode = "attack" | "decay";
 	export type Params = typeof defaultParameters;
 	export type State = typeof defaultState;
 }
 
-export class LAC extends Algorithm<LAC.Params, LAC.State> {
+export class PAC extends Algorithm<PAC.Params, PAC.State> {
 	modeHistory = new History<string>();
 
-	constructor(name: string, config: Config<Record<string, LAC.Params>>) {
+	constructor(name: string, config: Config<Record<string, PAC.Params>>) {
 		super(name, config, defaultParameters, defaultState);
 	}
 
@@ -66,11 +68,14 @@ export class LAC extends Algorithm<LAC.Params, LAC.State> {
 		// Decay to nominal
 
 		// 4. Recover gain (guaranteed positive: K = e^L_K > 0)
-		const K = clamp(math.exp(state.lk), params.minK, params.maxK);
+		const K = clamp(math.exp(state.lk), params.kp, params.kp * params.km);
+
+		state.integral = clamp(state.integral + error * dt, -params.iMax, params.iMax);
 
 		// 5. PD control output
 		const derivative = (error - state.pErr) / dt;
 		state.pErr = error;
-		return K * error + params.kd * derivative;
+
+		return K * error + params.ki * state.integral + params.kd * derivative;
 	}
 }
