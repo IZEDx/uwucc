@@ -4,7 +4,7 @@ export type Setter<T> = (v: T) => void;
 export type Unsub = () => void;
 
 export type Getters<T extends Record<string, any>> = {
-	[K in keyof T]: MaybeGetter<T[K]>;
+	[K in keyof T]: T[K] extends (...args: any[]) => any ? T[K] : MaybeGetter<T[K]>;
 };
 
 export namespace Signal {
@@ -82,6 +82,14 @@ export function signal<T>(value: T): Signal<T> {
 export function resolve<T>(value: Signal.Maybe<T> | MaybeGetter<T>): T {
 	if (value && value instanceof Signal) return value.value as T;
 	return extract(value) as T;
+}
+
+export function extractObject<T extends Record<string, any>>(value: Getters<T>): T {
+	const extracted = {} as T;
+	Object.entries(value).forEach(([k, v]) => {
+		extracted[k as keyof T] = extract(v);
+	});
+	return extracted;
 }
 
 export function extract<T>(value: MaybeGetter<T>): T {

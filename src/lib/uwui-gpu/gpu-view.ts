@@ -1,6 +1,5 @@
 import { printError } from "../chalk";
 import { clamp } from "../math";
-import { prepareOBJ } from "./3d";
 import { Pos, Rect, RGB } from "./types";
 
 function intersects(a: Rect, b: Rect) {
@@ -266,31 +265,5 @@ export class GPUView {
 	}
 	drawBezierCurve(points: DirectGPU.Point[], r: number, g: number, b: number, segments?: number) {
 		this.gpu.drawBezierCurve(this.display, points, r, g, b, segments);
-	}
-
-	loadObjModel(path: string, normalize = false) {
-		const name = fs.getName(path);
-		const file = fs.open(path, "r")[0];
-		const objData = file!.readAll()!;
-		file?.close();
-
-		if (normalize) {
-			const [preparedOBJ, vertexCount, faceCount] = prepareOBJ(objData);
-			return {
-				id: this.gpu.load3DModel(preparedOBJ),
-				vertexCount,
-				faceCount,
-				path,
-				name,
-			};
-		} else {
-			return {
-				id: this.gpu.load3DModel(objData),
-				vertexCount: 0,
-				faceCount: 0,
-				path,
-				name,
-			};
-		}
 	}
 }

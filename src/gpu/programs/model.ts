@@ -1,5 +1,5 @@
 import { printf, printValue } from "../../lib/chalk";
-import { prepareOBJ } from "../../lib/uwui-gpu/3d";
+import { prepareOBJ } from "../../lib/uwui-gpu/components/3d";
 
 const OBJ_FILE = "disk/static/Drone_Icon_UI_MC2.obj";
 

@@ -1,5 +1,4 @@
 import { PAC } from "../../lib/algorithm/pac";
-import { Img, Svg } from "../../lib/uwui-gpu/components/img";
 import { Box, each, Signal, Text, useGPU, useSignal, UwUi } from "../../lib/uwui-gpu/uwui";
 import { Controller, controllerParts } from "../controller";
 import { state } from "../peripherals";
@@ -12,25 +11,24 @@ export function Dashboard(props: { controller: Controller }) {
 	const { w, h } = gpu.clip;
 	return (
 		<Box w={w} h={h} bg={palette.bg(2)}>
-			<Box w={30} bg={palette.bg(3)}></Box>
 			<Box
-				x={40}
+				x={10}
 				y={10}
 				w={150}
 				h={-10}
 				bg={palette.bg(3)}
-				radius={20}
+				radius={10}
 				border={palette.bg(5)}
 			>
 				<Menu controller={props.controller} algo={algo} />
 			</Box>
 			<Box
-				x={200}
+				x={180}
 				y={10}
 				w={-10}
 				h={-10}
 				bg={palette.bg(3)}
-				radius={20}
+				radius={10}
 				border={palette.bg(5)}
 			>
 				<AltitudeGraph algo={algo.value} />

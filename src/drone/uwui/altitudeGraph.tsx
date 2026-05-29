@@ -1,8 +1,7 @@
-import { clamp, formatValue, lerp, niceStep } from "../../lib/math";
+import { clamp, formatValue, lerp, niceStep, round } from "../../lib/math";
 import { each } from "../../lib/uwui-gpu/hooks";
-import { If, Line, Text } from "../../lib/uwui-gpu/components";
 import { useSignal, useTick, useGPU } from "../../lib/uwui-gpu/hooks";
-import { Box, rgb, Signal, UwUi } from "../../lib/uwui-gpu/uwui";
+import { Box, If, Line, rgb, Signal, Text, UwUi } from "../../lib/uwui-gpu/uwui";
 import { palette } from "./palette";
 import { RGB } from "../../lib/uwui-gpu/colors";
 import { resolve } from "../../lib/uwui-gpu/signal";
@@ -55,7 +54,8 @@ export function AltitudeGraph(props: { algo: Signal.Maybe<PAC> }) {
 	const valueToY = (value: number) => midY - ((value - center) / displayRange) * plotH;
 	const gridStep = niceStep(displayRange / 8);
 	const gridCount = math.floor(displayRange / gridStep);
-	const displayMin = center - displayRange / 2;
+	const centerGridValue = round(center / gridStep) * gridStep;
+	const gridStart = centerGridValue - math.floor(gridCount / 2) * gridStep;
 
 	const axisColor = rgb(145, 231, 255);
 	const gridColor = rgb(55, 70, 95);
@@ -69,7 +69,8 @@ export function AltitudeGraph(props: { algo: Signal.Maybe<PAC> }) {
 				plotH={plotH}
 				midY={midY}
 				center={center}
-				displayMin={displayMin}
+				gridStart={gridStart}
+				centerGridValue={centerGridValue}
 				displayRange={displayRange}
 				gridCount={gridCount}
 				gridStep={gridStep}
@@ -126,7 +127,8 @@ function AltitudeGrid(props: {
 	plotH: number;
 	midY: number;
 	center: number;
-	displayMin: number;
+	gridStart: number;
+	centerGridValue: number;
 	displayRange: number;
 	gridCount: number;
 	gridStep: number;
@@ -144,7 +146,8 @@ function AltitudeGrid(props: {
 		plotH,
 		midY,
 		center,
-		displayMin,
+		gridStart,
+		centerGridValue,
 		displayRange,
 		gridCount,
 		gridStep,
@@ -179,9 +182,9 @@ function AltitudeGrid(props: {
 	);
 
 	for (let index = 0; index <= gridCount; index++) {
-		const value = displayMin + index * gridStep;
+		const value = gridStart + index * gridStep;
 		const y = midY - ((value - center) / displayRange) * plotH;
-		const color = gridColor; //index === gridCount / 2 ? axisColor : gridColor;
+		const color = gridColor;
 		if (y >= padding.top && y <= h) {
 			gpu.drawLine(padding.left, y, padding.left + plotW, y, color.r, color.g, color.b);
 			const label = formatValue(value);

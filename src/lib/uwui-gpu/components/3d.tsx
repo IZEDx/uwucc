@@ -1,4 +1,57 @@
-import { Line } from "./components";
+import { RGB } from "../colors";
+import { useDerived, useGPU } from "../hooks";
+import { extract, Getters } from "../signal";
+import { Pos3D, Rotation } from "../types";
+
+export namespace Model {
+	export interface Props {
+		pos?: Partial<Pos3D>;
+		rot?: Partial<Rotation>;
+		col?: RGB;
+		file: string;
+		scale?: number;
+		normalize?: boolean;
+	}
+}
+
+export function Model(props: Getters<Model.Props>) {
+	const gpu = useGPU();
+	const model = useDerived(() => {
+		const path = extract(props.file);
+		const normalize = extract(props.normalize);
+
+		const name = fs.getName(path);
+		const file = fs.open(path, "r")[0];
+		const objData = file!.readAll()!;
+		file?.close();
+
+		if (normalize) {
+			const [preparedOBJ, vertexCount, faceCount] = prepareOBJ(objData);
+			return gpu.gpu.load3DModel(preparedOBJ);
+		} else {
+			return gpu.gpu.load3DModel(objData);
+		}
+	});
+
+	const pos = { x: 0, y: 0, z: 0, ...extract(props.pos) };
+	const rot = { pitch: 0, yaw: 0, roll: 0, ...extract(props.rot) };
+	const col = { r: 255, g: 255, b: 255, ...extract(props.col) };
+
+	gpu.gpu.draw3DModel(
+		gpu.display,
+		model.value,
+		pos.x,
+		pos.y,
+		pos.z,
+		rot.pitch,
+		rot.yaw,
+		rot.roll,
+		extract(props.scale) ?? 1,
+		col.r,
+		col.g,
+		col.b,
+	);
+}
 
 function parseIndex(value: string | null, count: number): number | null {
 	const parsed = value === null ? NaN : Number(value);

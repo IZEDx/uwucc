@@ -1,8 +1,7 @@
 import { clamp, formatValue, lerp, niceStep } from "../../lib/math";
 import { each } from "../../lib/uwui-gpu/hooks";
-import { Line } from "../../lib/uwui-gpu/components";
 import { useSignal, useTick, useGPU } from "../../lib/uwui-gpu/hooks";
-import { Box, rgb, UwUi } from "../../lib/uwui-gpu/uwui";
+import { Box, Line, rgb, UwUi } from "../../lib/uwui-gpu/uwui";
 import { palette } from "./palette";
 import { RGB } from "../../lib/uwui-gpu/colors";
 import { Algorithm } from "../../lib/algorithm/abstract";

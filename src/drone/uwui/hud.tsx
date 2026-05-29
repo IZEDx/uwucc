@@ -1,12 +1,9 @@
 import { LAC } from "../../lib/algorithm/lac";
-import { printValue } from "../../lib/chalk";
 import { clamp, round } from "../../lib/math";
-import { Model } from "../../lib/uwui-gpu/components";
-import { use3D, useHook, useTick } from "../../lib/uwui-gpu/hooks";
-import { Box, each, Signal, Text, useGPU, useSignal, UwUi } from "../../lib/uwui-gpu/uwui";
+import { use3D, useTick } from "../../lib/uwui-gpu/hooks";
+import { Box, Model, Text, useGPU, UwUi } from "../../lib/uwui-gpu/uwui";
 import { Controller } from "../controller";
 import { peripherals, state } from "../peripherals";
-import { AltitudeGraph } from "./altitudeGraph";
 import { palette } from "./palette";
 
 export function HUD(props: { controller: Controller }) {
